@@ -4,7 +4,7 @@ title: Privacy Policy
 permalink: /privacy-policy/
 ---
 
-This Privacy Policy explains how Tilanou handles information when visitors use this website.
+This Privacy Policy explains how physicslly handles information when visitors use this website.
 
 Tilanou is a theoretical physics notes blog focused on topics such as quantum field theory, general relativity, quantum gravity, cosmology, mathematical physics, and the search for unification.
 
