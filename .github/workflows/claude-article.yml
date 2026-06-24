@@ -65,6 +65,7 @@ jobs:
           claude -p "$(cat .github/prompts/create-physics-article.md)" \
             --model "$OPENROUTER_MODEL" \
             --permission-mode bypassPermissions \
+            --allowedTools "Read,Edit,MultiEdit,Write,Bash" \
             --max-turns 25
 
       - name: Final build verification
