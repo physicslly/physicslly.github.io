@@ -1,4 +1,4 @@
-# Tilanou Blog Instructions
+# physicslly Blog Instructions
 
 ## Project Context
 
@@ -149,7 +149,7 @@ Use this front matter style for every new article:
 ```yaml
 ---
 title: "Article Title"
-date: 2026-06-23 10:00:00 +0700
+date: YYYY-MM-DD 00:01:00 +0800
 categories: [Physics, Theory]
 tags: [physics, theoretical-physics, theory-of-everything]
 description: "A concise technical description of the article."
@@ -165,6 +165,194 @@ Rules:
 - Do not use future dates.
 - Preserve valid Chirpy front matter.
 - Always include `math: true`.
+
+Date rule:
+Use Asia/Singapore time for all new post dates.
+
+The front matter date must use the +0800 timezone offset.
+
+Never use a future timestamp. To avoid Jekyll skipping posts as future-dated, use a timestamp that has definitely already passed, preferably 00:01:00 +0800 on the current Singapore date, or yesterday's date if unsure.
+
+Example:
+date: YYYY-MM-DD 00:01:00 +0800
+
+Never use fixed future-prone times like 10:00:00 +0800 unless that time has already passed.
+
+## Mandatory Math Rendering Hard Gate
+
+Before finishing any article-generation or article-editing task, perform a strict math rendering check.
+
+This is mandatory. Do not finish, commit, or report success if raw LaTeX remains visible in prose.
+
+Common broken patterns that must be fixed:
+
+- `T_{\mu\nu}` outside math mode
+- `\partial^{\mu}` outside math mode
+- `\mathcal{O}` outside math mode
+- `\Delta_i` outside math mode
+- `\ell_i` outside math mode
+- `\langle ... \rangle` outside math mode
+- `\frac{...}{...}` outside math mode
+- equations written directly inside bullet lists without display math
+- long formulas written inline
+- display equations mixed with prose on the same line
+- indented math that becomes a grey code block
+
+Correct examples:
+
+Inline symbols must use `$...$`:
+
+```md
+The stress-energy tensor $T_{\mu\nu}$ is conserved, so $\partial^\mu T_{\mu\nu}=0$.
+```
+
+Operators must use `$...$`:
+
+```md
+A primary operator $\mathcal{O}_i(x)$ has scaling dimension $\Delta_i$ and spin $\ell_i$.
+```
+
+Long correlation functions must use display math:
+
+```md
+The two-point function takes the form
+
+$$
+\langle \mathcal{O}_i(x)\mathcal{O}_j(0)\rangle
+=
+\frac{\delta_{ij}}{|x|^{2\Delta_i}}.
+$$
+```
+
+Long three-point functions must use display math and `aligned`:
+
+```md
+$$
+\begin{aligned}
+\langle
+\mathcal{O}_i(x_1)
+\mathcal{O}_j(x_2)
+\mathcal{O}_k(x_3)
+\rangle
+&=
+\frac{C_{ijk}}
+{|x_{12}|^{\Delta_i+\Delta_j-\Delta_k}
+ |x_{23}|^{\Delta_j+\Delta_k-\Delta_i}
+ |x_{13}|^{\Delta_k+\Delta_i-\Delta_j}}.
+\end{aligned}
+$$
+```
+
+Bullet lists must not contain raw LaTeX. Bad:
+
+```md
+- Primary operators \mathcal{O}\_i(x) of scaling dimension \Delta_i.
+```
+
+Good:
+
+```md
+- Primary operators $\mathcal{O}_i(x)$ of scaling dimension $\Delta_i$.
+```
+
+Before finishing, run this strict audit:
+
+````bash
+python - <<'PY'
+from pathlib import Path
+import re
+
+latex_cmd = re.compile(
+    r'\\(frac|sum|int|ell|mu|nu|alpha|beta|gamma|delta|theta|lambda|partial|nabla|mathcal|mathrm|operatorname|langle|rangle|left|right|begin|end|sqrt|Lambda|Omega|rho|phi|psi|Gamma|sigma|equiv|cdot|times|infty|leq|geq|Delta|Phi|Psi)'
+)
+
+banned_delimiters = re.compile(r'\\\(|\\\)|\\\[|\\\]')
+
+def strip_front_matter(text):
+    if text.startswith('---'):
+        parts = text.split('---', 2)
+        if len(parts) >= 3:
+            return parts[2]
+    return text
+
+def outside_inline_segments(line):
+    parts = line.split('$')
+    for i, part in enumerate(parts):
+        if i % 2 == 0:
+            yield part
+
+issues = 0
+
+for path in sorted(Path("_posts").glob("*.md")):
+    text = strip_front_matter(path.read_text())
+    in_code = False
+    in_display = False
+
+    for n, line in enumerate(text.splitlines(), 1):
+        stripped = line.strip()
+
+        if stripped.startswith("```"):
+            in_code = not in_code
+            continue
+
+        if in_code:
+            continue
+
+        if stripped == "$$":
+            in_display = not in_display
+            continue
+
+        if "$$" in line and stripped != "$$":
+            print(f"INLINE_DISPLAY_MATH {path}:{n}: {line[:240]}")
+            issues += 1
+
+        if not in_display and line.count("$") % 2 == 1:
+            print(f"UNBALANCED_DOLLAR {path}:{n}: {line[:240]}")
+            issues += 1
+
+        if not in_display and banned_delimiters.search(line):
+            print(f"BANNED_LATEX_DELIMITER {path}:{n}: {line[:240]}")
+            issues += 1
+
+        if not in_display:
+            for segment in outside_inline_segments(line):
+                if latex_cmd.search(segment):
+                    print(f"RAW_LATEX_OUTSIDE_MATH {path}:{n}: {line[:240]}")
+                    issues += 1
+                    break
+
+        for m in re.finditer(r'\$([^$]{100,})\$', line):
+            print(f"LONG_INLINE_MATH {path}:{n}: {m.group(0)[:240]}")
+            issues += 1
+
+        if line.count("\\left") != line.count("\\right"):
+            print(f"LEFT_RIGHT_MISMATCH {path}:{n}: {line[:240]}")
+            issues += 1
+
+        if re.search(r'^\s{4,}.*(\\|\$|theta|lambda|mu|nu|ell|Delta|mathcal)', line):
+            print(f"POSSIBLE_CODE_BLOCK_MATH {path}:{n}: {line[:240]}")
+            issues += 1
+
+print(f"TOTAL_STRICT_MATH_ISSUES={issues}")
+
+if issues:
+    raise SystemExit(1)
+PY
+````
+
+If the audit fails:
+
+1. Open the exact reported file and line.
+2. Convert raw LaTeX symbols into inline math using `$...$`.
+3. Convert long formulas into display math.
+4. Use `aligned` for long equations.
+5. Rebuild the site.
+6. Rerun the strict audit.
+7. Repeat until `TOTAL_STRICT_MATH_ISSUES=0`.
+
+Do not treat real raw LaTeX as a false positive.
+
+Only false positives inside intentional code examples are allowed.
 
 ## Math Rendering Rules
 
@@ -559,3 +747,18 @@ When Claude is executed from GitHub Actions, follow these rules:
 Default GitHub Actions article prompt:
 
 "Read and follow CLAUDE.md. Review existing Physics posts first, identify topic gaps, then create exactly 1 new PhD-level theoretical physics article that does not duplicate existing articles. After writing, build the site and run the math-rendering audits from CLAUDE.md. Fix all real LaTeX/rendering issues before finishing. Recommend which article pages need manual browser review for heavy equations."
+
+## 2-Pass Math-Rendering Process (GitHub Actions)
+
+The GitHub Actions article workflow (`claude-article.yml`) uses a 2-pass math-rendering gate to prevent PR creation when generated articles contain broken LaTeX:
+
+1. **Claude creates the article.** The `Run Claude article prompt` step executes Claude with the article-generation prompt.
+2. **Non-fatal strict math audit.** A Python script (`scripts/strict_math_audit.py`) audits only the changed/new posts using `--changed-only`. If issues are found, the step reports them but does not fail the workflow (`continue-on-error: true`). The audit log is saved to `/tmp/math-audit.log`.
+3. **Claude fix pass (conditional).** If the non-fatal audit failed, the `Claude fix math rendering issues` step runs. It creates a temporary prompt containing the audit report and calls Claude again with instructions to fix only the reported math-rendering issues. Max 15 turns.
+4. **Fatal final strict math audit.** After the fix pass, the final audit runs. This step does NOT use `continue-on-error` — it blocks the workflow if any real math issue remains.
+5. **Commit and PR creation.** Commit and PR steps only execute if the final strict math audit passes.
+
+Key rules:
+- Do not report success if raw LaTeX remains visible outside math mode.
+- The 2-pass audit applies only to the `claude-article.yml` workflow, not to manual local article creation.
+- `scripts/strict_math_audit.py` accepts `--changed-only` to audit only files modified in the working tree.

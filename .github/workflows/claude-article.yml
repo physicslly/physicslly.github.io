@@ -2,6 +2,10 @@ name: "Claude Article Generator"
 
 on:
   workflow_dispatch:
+  schedule:
+    # 00:17 UTC = 07:17 WIB
+    # 12:17 UTC = 19:17 WIB
+    - cron: "17 0,12 * * *"
 
 permissions:
   contents: write
@@ -53,11 +57,68 @@ jobs:
             --allowedTools "Read,Edit,MultiEdit,Write,Bash" \
             --max-turns 25
 
+      # ---- 2-Pass Math Rendering Gate ----
+      # Pass 1: Non-fatal audit — if it fails, Claude gets a fix pass.
+      # Pass 2: Fatal audit — blocks commit and PR if any real issue remains.
+
+      - name: Run non-fatal strict math audit
+        id: math_audit
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          python scripts/strict_math_audit.py --changed-only | tee /tmp/math-audit.log
+
+      - name: Claude fix math rendering issues
+        if: steps.math_audit.outcome == 'failure'
+        run: |
+          cat > /tmp/claude-fix-math-prompt.md << 'PROMPT'
+          Read and follow CLAUDE.md.
+
+          Task:
+          Fix only the math-rendering issues reported below.
+
+          Important:
+          - Do not create new articles.
+          - Do not rewrite article substance.
+          - Do not edit `_site/`.
+          - Only edit Markdown files in `_posts/`.
+          - Prefer editing only the files mentioned in the audit report.
+          - Preserve front matter, title, references, and article structure.
+          - Keep `math: true`.
+          - Convert raw LaTeX symbols into `$...$`.
+          - Convert long formulas into display math.
+          - Use `aligned` for long equations.
+          - Do not leave LaTeX commands outside math mode.
+          - Do not use `\(...\)` or `\[...\]`.
+          - Do not indent equations or normal paragraphs with four spaces.
+          - Do not place `$$...$$` inside paragraph lines.
+          - `$$` must be alone on its own line.
+          - Add blank lines before and after display equations.
+          - Fix all real issues from the audit report.
+
+          Audit report:
+          PROMPT
+          cat /tmp/math-audit.log >> /tmp/claude-fix-math-prompt.md
+          claude -p "$(cat /tmp/claude-fix-math-prompt.md)" \
+            --permission-mode bypassPermissions \
+            --allowedTools "Read,Edit,MultiEdit,Write,Bash" \
+            --max-turns 15
+
+      - name: Final strict math audit
+        run: |
+          python scripts/strict_math_audit.py --changed-only
+
       - name: Final build verification
         run: |
           rm -rf .jekyll-cache _site
           bundle exec jekyll build 2>&1 | tee /tmp/jekyll-build.log
-          grep -Ei "Conflict|Skipping|Error|Warning" /tmp/jekyll-build.log || true
+
+          if grep -Ei "Conflict|Error|Skipping: .*future date" /tmp/jekyll-build.log; then
+            echo "Build verification failed: conflict, error, or future-dated post detected."
+            exit 1
+          fi
+
+          grep -Ei "Warning" /tmp/jekyll-build.log || true
           find _site -maxdepth 4 -type f -name "index.html" | grep "/posts/" | wc -l
           grep -c "<loc>" _site/sitemap.xml
           grep -RIn "math: true" _posts | wc -l
@@ -104,6 +165,6 @@ jobs:
           - Existing posts reviewed
           - Topic gap selected
           - Article created in _posts/
+          - 2-pass math audit passed (non-fatal first pass, fatal final pass)
           - Jekyll build executed
-          - Math-rendering audit requested from CLAUDE.md
           - Manual browser review still recommended before merge"
