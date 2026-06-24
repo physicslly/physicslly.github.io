@@ -55,7 +55,7 @@ jobs:
           claude -p "$(cat .github/prompts/create-physics-article.md)" \
             --permission-mode bypassPermissions \
             --allowedTools "Read,Edit,MultiEdit,Write,Bash" \
-            --max-turns 25
+            --max-turns 45
 
       # ---- 2-Pass Math Rendering Gate ----
       # Pass 1: Non-fatal audit — if it fails, Claude gets a fix pass.
@@ -102,7 +102,7 @@ jobs:
           claude -p "$(cat /tmp/claude-fix-math-prompt.md)" \
             --permission-mode bypassPermissions \
             --allowedTools "Read,Edit,MultiEdit,Write,Bash" \
-            --max-turns 15
+            --max-turns 25
 
       - name: Final strict math audit
         run: |
@@ -168,3 +168,4 @@ jobs:
           - 2-pass math audit passed (non-fatal first pass, fatal final pass)
           - Jekyll build executed
           - Manual browser review still recommended before merge"
+
