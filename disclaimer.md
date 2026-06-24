@@ -4,7 +4,7 @@ title: Disclaimer
 permalink: /disclaimer/
 ---
 
-The content on Tilanou is provided for educational and informational purposes only.
+The content on physicslly is provided for educational and informational purposes only.
 
 This website publishes theoretical physics notes on topics such as quantum field theory, general relativity, quantum gravity, cosmology, gauge theory, geometry, topology, mathematical physics, and the search for unification.
 
