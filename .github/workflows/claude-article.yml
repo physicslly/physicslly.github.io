@@ -2,10 +2,6 @@ name: "Claude Article Generator"
 
 on:
   workflow_dispatch:
-  schedule:
-    # 00:17 UTC = 07:17 WIB
-    # 12:17 UTC = 19:17 WIB
-    - cron: "17 0,12 * * *"
 
 permissions:
   contents: write
