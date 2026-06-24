@@ -27,7 +27,7 @@ Do not edit `_site/` because it is generated output.
 
 Blog name:
 
-Tilanou
+physicslly
 
 Tagline:
 
@@ -555,3 +555,7 @@ When Claude is executed from GitHub Actions, follow these rules:
 20. If the audit reports false positives, explain why they are false positives.
 21. Recommend manual browser review for equation-heavy posts.
 22. Treat the article as a draft that will be reviewed through a Pull Request.
+
+Default GitHub Actions article prompt:
+
+"Read and follow CLAUDE.md. Review existing Physics posts first, identify topic gaps, then create exactly 1 new PhD-level theoretical physics article that does not duplicate existing articles. After writing, build the site and run the math-rendering audits from CLAUDE.md. Fix all real LaTeX/rendering issues before finishing. Recommend which article pages need manual browser review for heavy equations."
