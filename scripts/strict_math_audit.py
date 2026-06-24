@@ -159,11 +159,19 @@ def audit_file(path, report):
                     )
                     break
 
-        # --- Check 5: long inline math (>100 chars inside $...$) ---
-        for m in re.finditer(r"\$([^$]{100,})\$", line):
-            report.append(
-                f"LONG_INLINE_MATH {path}:{n}: {m.group(0)[:240]}"
-            )
+        # --- Check 5: long inline math (>100 chars inside actual $...$ segments) ---
+        if not in_display:
+            parts = line.split("$")
+
+            # Odd indexes are actual inline math segments:
+            # text $math$ text $math$ text
+            # parts[0] text, parts[1] math, parts[2] text, parts[3] math
+            for i in range(1, len(parts), 2):
+                segment = parts[i]
+                if len(segment) > 100:
+                    report.append(
+                        f"LONG_INLINE_MATH {path}:{n}: ${segment[:240]}$"
+                    )
 
         # --- Check 6: \left / \right mismatch ---
         if line.count("\\left") != line.count("\\right"):
