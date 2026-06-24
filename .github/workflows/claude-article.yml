@@ -19,7 +19,7 @@ jobs:
       OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
 
       # Free OpenRouter model router
-      OPENROUTER_MODEL: openrouter/free
+      OPENROUTER_MODEL: qwen/qwen3-coder:free
 
       # OpenRouter Claude Code integration
       ANTHROPIC_BASE_URL: https://openrouter.ai/api
@@ -27,10 +27,10 @@ jobs:
       ANTHROPIC_API_KEY: ""
 
       # Force Claude Code roles to use OpenRouter free router
-      ANTHROPIC_DEFAULT_OPUS_MODEL: openrouter/free
-      ANTHROPIC_DEFAULT_SONNET_MODEL: openrouter/free
-      ANTHROPIC_DEFAULT_HAIKU_MODEL: openrouter/free
-      CLAUDE_CODE_SUBAGENT_MODEL: openrouter/free
+      ANTHROPIC_DEFAULT_OPUS_MODEL: qwen/qwen3-coder:free
+      ANTHROPIC_DEFAULT_SONNET_MODEL: qwen/qwen3-coder:free
+      ANTHROPIC_DEFAULT_HAIKU_MODEL: qwen/qwen3-coder:free
+      CLAUDE_CODE_SUBAGENT_MODEL: qwen/qwen3-coder:free
 
     steps:
       - name: Checkout
@@ -65,7 +65,7 @@ jobs:
           claude -p "$(cat .github/prompts/create-physics-article.md)" \
             --model "$OPENROUTER_MODEL" \
             --permission-mode acceptEdits \
-            --max-turns 40
+            --max-turns 25
 
       - name: Final build verification
         run: |
