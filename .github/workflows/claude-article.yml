@@ -54,7 +54,6 @@ jobs:
           MODELS=(
             "openrouter/owl-alpha"
             "nvidia/nemotron-3-ultra-550b-a55b:free"
-            "qwen/qwen3-coder:free"
           )
 
           RUN_NUMBER="${GITHUB_RUN_NUMBER:-1}"
