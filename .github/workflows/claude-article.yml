@@ -20,7 +20,6 @@ jobs:
       ANTHROPIC_BASE_URL: https://openrouter.ai/api
       ANTHROPIC_AUTH_TOKEN: ${{ secrets.OPENROUTER_API_KEY }}
       ANTHROPIC_API_KEY: ""
-      ANTHROPIC_MODEL: openrouter/free
 
     steps:
       - name: Checkout
@@ -49,6 +48,24 @@ jobs:
         run: |
           npm install -g @anthropic-ai/claude-code
           claude --version
+
+      - name: Select OpenRouter model
+        run: |
+          MODELS=(
+            "openrouter/owl-alpha"
+            "nvidia/nemotron-3-ultra-550b-a55b:free"
+            "poolside/laguna-m.1:free"
+            "qwen/qwen3-coder:free"
+          )
+
+          RUN_NUMBER="${GITHUB_RUN_NUMBER:-1}"
+          INDEX=$(( (RUN_NUMBER - 1) % ${#MODELS[@]} ))
+          SELECTED_MODEL="${MODELS[$INDEX]}"
+
+          echo "GitHub run number: $RUN_NUMBER"
+          echo "Selected model index: $INDEX"
+          echo "Selected model: $SELECTED_MODEL"
+          echo "ANTHROPIC_MODEL=$SELECTED_MODEL" >> "$GITHUB_ENV"
 
       - name: Run Claude article prompt
         run: |
@@ -168,4 +185,3 @@ jobs:
           - 2-pass math audit passed (non-fatal first pass, fatal final pass)
           - Jekyll build executed
           - Manual browser review still recommended before merge"
-
