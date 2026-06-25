@@ -120,9 +120,11 @@ Consider a congruence of null geodesics with tangent vector field $k^{\mu}$ sati
 $$
 \theta = \nabla_{\mu} k^{\mu},
 $$
+
 $$
-\sigma_{\mu\nu} = \nabla_{({\mu}} k_{\nu)} - \frac{1}{3} \theta \h_{\mu\nu},
+\sigma_{\mu\nu} = \nabla_{({\mu}} k_{\nu)} - \frac{1}{3} \theta h_{\mu\nu},
 $$
+
 $$
 \omega_{\mu\nu} = \nabla_{[\mu} k_{\nu]},
 $$

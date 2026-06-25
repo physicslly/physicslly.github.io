@@ -37,7 +37,21 @@ $$
 
 evaluated at the horizon, where $\xi = \partial_t$ is the time-translation Killing vector. For Schwarzschild, $\kappa = 1/4M = 1/2r_s$.
 
-The null coordinates that penetrate the horizon are Eddington–Finkelstein coordinates: the tortoise coordinate $r^* = r + 2M \ln\lvert (r/2M) - 1\rvert$, and advanced/retarded null coordinates $v = t + r^*$, $u = t - r^*$. Kruskal–Szekeres coordinates $(U,V)$ extend the manifold maximally:
+The null coordinates that penetrate the horizon are Eddington–Finkelstein coordinates. The tortoise coordinate is
+
+$$
+r^* = r + 2M \ln\lvert (r/2M) - 1\rvert,
+$$
+
+and the advanced/retarded null coordinates are
+
+$$
+v = t + r^*,
+\qquad
+u = t - r^*.
+$$
+
+Kruskal–Szekeres coordinates $(U,V)$ extend the manifold maximally:
 
 $$
 U = -e^{-u/4M}, \quad V = e^{v/4M},

@@ -92,7 +92,18 @@ The leading correction is a dimension-6 four-fermion operator suppressed by $1/M
 
 ## 5. Interpretation of the Main Equations
 
-**The EFT expansion $\mathcal{L}_{\mathrm{EFT}} = \mathcal{L}_{\mathrm{ren}} + \sum_{d>4} c_i^{(d)} \mathcal{O}_i^{(d)} / \Lambda^{d-4}$.** The renormalizable part $\mathcal{L}_{\mathrm{ren}}$ dominates at low energies. Each higher-dimensional operator is suppressed by at least (E/$\Lambda$)^{2}. The Wilson coefficients $c_i^{(d)}$ encode all information about the UV physics that has been integrated out. At any fixed order in $E/\Lambda$, only finitely many operators contribute, making the theory predictive order by order.
+**The EFT expansion.** The expansion
+
+$$
+\mathcal{L}_{\mathrm{EFT}}
+=
+\mathcal{L}_{\mathrm{ren}}
++
+\sum_{d>4}
+\frac{c_i^{(d)}\mathcal{O}_i^{(d)}}{\Lambda^{d-4}}
+$$
+
+shows that the renormalizable part $\mathcal{L}_{\mathrm{ren}}$ dominates at low energies. Each higher-dimensional operator is suppressed by at least $(E/\Lambda)^2$. The Wilson coefficients $c_i^{(d)}$ encode all information about the UV physics that has been integrated out. At any fixed order in $E/\Lambda$, only finitely many operators contribute, making the theory predictive order by order.
 
 **The Fermi theory example.** The four-fermion interaction $\mathcal{L}_{\mathrm{Fermi}} = (G_F/\sqrt{2}) (\bar\psi\gamma^\mu(1-\gamma^5)\psi)^2$ with $G_F \approx 1.166 \times 10^{-5}\ \mathrm{GeV}^{-2}$ is the leading term of the EFT of the weak interaction below $M_W \approx 80\ \mathrm{GeV}$. The cutoff $\Lambda \sim M_W$ and $G_F \sim 1/\Lambda^2$. Historically, Fermi theory predated the UV completion (the Standard Model) by decades, demonstrating that EFTs are predictive even when the UV theory is unknown.
 

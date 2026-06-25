@@ -18,7 +18,7 @@ Entanglement entropy measures the quantum correlations between a spatial region 
 Entanglement is one of the most distinctive features of quantum mechanics. In quantum field theory, the vacuum state of a relativistic system exhibits intricate entanglement between spatially separated regions. The entanglement entropy of a region A measures how much information about the state of A is hidden in its correlations with the complement B.
 
 Interest in entanglement entropy has grown dramatically with the recognition that it plays a central role in several fundamental problems:
-- **Black hole thermodynamics**: The Bekenstein-Hawking entropy $S_{BH}$ = A/4G$\hbar$ suggests that spacetime degrees of freedom are encoded on holographic screens, with entanglement entropy providing a microscopic interpretation [1].
+- **Black hole thermodynamics**: The Bekenstein-Hawking entropy $S_{\mathrm{BH}} = A/(4G\hbar)$ suggests that spacetime degrees of freedom are encoded on holographic screens, with entanglement entropy providing a microscopic interpretation [1].
 - **Holography**: The Ryu-Takayanagi formula relates entanglement entropy in the boundary CFT to the area of minimal surfaces in the bulk AdS spacetime, providing a deep link between quantum information and quantum gravity [2].
 - **Quantum gravity**: The area law for entanglement entropy suggests that spacetime itself may emerge from the entanglement structure of more fundamental degrees of freedom [3].
 
@@ -44,17 +44,23 @@ $$
 I(A:B) = S_A + S_B - S_{AB}.
 $$
 
-In quantum field theory, we consider a spatial region A on a Cauchy surface $\Sigma$. The Hilbert space factorizes as $\mathcal{H}$ = $\mathcal{H}_A \otimes \mathcal{H}_{\bar A}$ only after introducing an ultraviolet regulator, since degrees of freedom arbitrarily close to the entangling surface $\partial A$ are infinitely entangled across the boundary [4].
+In quantum field theory, we consider a spatial region A on a Cauchy surface $\Sigma$. The Hilbert space factorizes as
+
+$$
+\mathcal{H} = \mathcal{H}_{A} \otimes \mathcal{H}_{\bar A}
+$$
+
+only after introducing an ultraviolet regulator, since degrees of freedom arbitrarily close to the entangling surface $\partial A$ are infinitely entangled across the boundary [4].
 
 A **entangling surface** $\partial A$ is the boundary between A and its complement. For a d-dimensional QFT, the entanglement entropy diverges in the continuum limit due to short-distance correlations across $\partial A$.
 
-Throughout this article, we work in Euclidean signature for the replica trick, and use natural units $\hbar$ = c = 1. For CFT calculations, the metric is ds^2 = d$\tau^2$ + d$\mathbf{x}^2$ for flat space.
+Throughout this article, we work in Euclidean signature for the replica trick, and use natural units $\hbar = c = 1$. For CFT calculations, the metric is $ds^2 = d\tau^2 + d\mathbf{x}^2$ for flat space.
 
 ## 3. Theoretical Framework
 
 ### 3.1 The Replica Trick
 
-The entanglement entropy S_A of a spatial region A in a QFT is notoriously difficult to compute directly because the reduced density matrix $\rho_A$ is a complicated object in the continuum. The replica trick circumvents this by expressing S_A in terms of partition functions on replicated geometries, which are computable using standard QFT methods.
+The entanglement entropy $S_A$ of a spatial region A in a QFT is notoriously difficult to compute directly because the reduced density matrix $\rho_A$ is a complicated object in the continuum. The replica trick circumvents this by expressing $S_A$ in terms of partition functions on replicated geometries, which are computable using standard QFT methods.
 
 The **Rényi entropies** are defined for integer $n \ge 2$ as
 
@@ -68,7 +74,7 @@ $$
 S_A = \lim_{n \to 1} S_A^{(n)}.
 $$
 
-In the Euclidean path integral formulation, the trace $\operatorname{Tr}$ $\rho_A^{n}$ is computed on an n-sheeted covering space $\mathcal{M}_n$: we take n copies of the original Euclidean spacetime, cut each along region A, and glue them cyclically. This creates a conical singularity at the entangling surface $\partial A$ with deficit angle 2$\pi(1-n)$.
+In the Euclidean path integral formulation, the trace $\operatorname{Tr}\rho_A^{n}$ is computed on an n-sheeted covering space $\mathcal{M}_n$: we take n copies of the original Euclidean spacetime, cut each along region A, and glue them cyclically. This creates a conical singularity at the entangling surface $\partial A$ with deficit angle $2\pi(1-n)$.
 
 The partition function on the replicated manifold is
 
@@ -82,7 +88,7 @@ $$
 S_A^{(n)} = \frac{1}{1-n} \ln \frac{Z_n}{Z_1^n}.
 $$
 
-For a QFT that can be described by a path integral on a curved manifold with conical singularities, powerful techniques from conformal field theory and holography can be applied to evaluate Z_n explicitly.
+For a QFT that can be described by a path integral on a curved manifold with conical singularities, powerful techniques from conformal field theory and holography can be applied to evaluate $Z_n$ explicitly.
 
 ### 3.2 UV Divergences and the Area Law
 
@@ -92,7 +98,7 @@ $$
 S_A = c_{d-2} \frac{\operatorname{Area}(\partial A)}{\epsilon^{d-2}} + c_{d-4} \frac{1}{\epsilon^{d-4}} + \cdots,
 $$
 
-with subleading power-law divergences for d > 2. Here $\epsilon$ is a short-distance cutoff (e.g., lattice spacing) and the coefficients c_k depend on the field content.
+with subleading power-law divergences for $d > 2$. Here $\epsilon$ is a short-distance cutoff (e.g., lattice spacing) and the coefficients $c_k$ depend on the field content.
 
 This area law was first recognized by Srednicki (1993) for free scalar fields and subsequently proven to be a universal property of gapped systems: their ground-state entanglement entropy scales with the boundary area of the region, not its volume [4]. This is fundamentally different from thermal entropy, which is extensive.
 
@@ -102,11 +108,11 @@ $$
 S_A = \cdots + (-1)^{d/2-1} \, \frac{4a}{180} \ln(\epsilon) + \cdots,
 $$
 
-where a is the Euler anomaly coefficient for a CFT in d dimensions.
+where $a$ is the Euler anomaly coefficient for a CFT in $d$ dimensions.
 
 ### 3.3 Mutual Information and Other Measures
 
-The mutual information I(A:B) = S_A + S_B - S_{AB} is often a more convenient quantity than entanglement entropy because it is UV-finite and regulator-independent. It measures the total correlations between A and B, both classical and quantum.
+The mutual information $I(A:B) = S_A + S_B - S_{AB}$ is often a more convenient quantity than entanglement entropy because it is UV-finite and regulator-independent. It measures the total correlations between A and B, both classical and quantum.
 
 Other measures of bipartite entanglement include:
 - **Entanglement negativity**: $\mathcal{E} = \ln \|\rho^{T_A}\|_1$, where $T_A$ denotes partial transpose on $A$. This is a computable entanglement measure for mixed states.
@@ -123,7 +129,7 @@ $$
 S(\ell) = \frac{c}{3} \ln \frac{\ell}{\epsilon} + c_1,
 $$
 
-where c is the central charge of the CFT, $\epsilon$ is a UV cutoff, and c_1 is a non-universal constant.
+where $c$ is the central charge of the CFT, $\epsilon$ is a UV cutoff, and $c_1$ is a non-universal constant.
 
 For a CFT on a circle of circumference L, the result is
 
@@ -131,13 +137,13 @@ $$
 S(\ell) = \frac{c}{3} \ln \left( \frac{L}{\pi\epsilon} \sin \frac{\pi\ell}{L} \right) + c_1,
 $$
 
-reducing to the infinite-line result for $\ell$ $\ll$ L.
+reducing to the infinite-line result for $\ell \ll L$.
 
 ### 4.2 Derivation via Twist Fields
 
-The key insight is that Tr $\rho_A^{n}$ on the n-sheeted covering space is equivalent to a correlation function of twist fields in the replicated CFT. The twist fields $\mathcal{T}_n(z)$ and $\tilde{\mathcal{T}}_n(\bar{z})$ are primary operators inserted at the endpoints of the interval, implementing the cyclic permutation among sheets.
+The key insight is that $\operatorname{Tr}\rho_A^{n}$ on the n-sheeted covering space is equivalent to a correlation function of twist fields in the replicated CFT. The twist fields $\mathcal{T}_n(z)$ and $\tilde{\mathcal{T}}_n(\bar{z})$ are primary operators inserted at the endpoints of the interval, implementing the cyclic permutation among sheets.
 
-The conformal weight of the twist fields is determined by the stress-energy tensor on the replicated manifold. The uniformizing map z $\to$ w = (z/$\ell$)^{1/n} maps the n-sheeted plane to a single-sheeted plane. Under this map, the stress tensor transforms anomalously due to the Schwarzian derivative, giving
+The conformal weight of the twist fields is determined by the stress-energy tensor on the replicated manifold. The uniformizing map $z \to w = (z/\ell)^{1/n}$ maps the n-sheeted plane to a single-sheeted plane. Under this map, the stress tensor transforms anomalously due to the Schwarzian derivative, giving
 
 $$
 \Delta_n = \bar\Delta_n = \frac{c}{24} \left( n - \frac{1}{n} \right).
@@ -156,11 +162,11 @@ $$
 = c_n \left( \frac{\ell}{\epsilon} \right)^{-(c/6)(n-1/n)},
 $$
 
-where the cutoff $\epsilon$ regularizes the twist-field self-contractions. Taking n $\to$ 1 yields the logarithmic result.
+where the cutoff $\epsilon$ regularizes the twist-field self-contractions. Taking $n \to 1$ yields the logarithmic result.
 
 ### 4.3 Finite Temperature and Finite Size
 
-At finite temperature $\beta^{-1}$, the CFT lives on a cylinder of circumference $\beta$. The twist-field correlation function on the cylinder is obtained from the plane by the exponential map w = $e^{2\pi z/\beta}$, giving
+At finite temperature $\beta^{-1}$, the CFT lives on a cylinder of circumference $\beta$. The twist-field correlation function on the cylinder is obtained from the plane by the exponential map $w = e^{2\pi z/\beta}$, giving
 
 $$
 \operatorname{Tr} \rho_A^n = c_n \left( \frac{\beta}{\pi\epsilon} \sinh \frac{\pi\ell}{\beta} \right)^{-(c/6)(n-1/n)}.
@@ -192,11 +198,11 @@ where $x = (x_{12}x_{34})/(x_{13}x_{24})$ is the conformal cross-ratio and $\mat
 
 ## 5. Interpretation of the Main Equations
 
-The area law for entanglement entropy S_A $\propto$ $\operatorname{Area}(\partial A)/\epsilon^{d-2}$ reveals a fundamental difference between entanglement entropy and thermal entropy. Thermal entropy is extensive (proportional to volume) because it measures classical uncertainty about the microstate. Entanglement entropy measures quantum correlations between A and its complement, which are strongest across the boundary separating them.
+The area law for entanglement entropy $S_A \propto \operatorname{Area}(\partial A)/\epsilon^{d-2}$ reveals a fundamental difference between entanglement entropy and thermal entropy. Thermal entropy is extensive (proportional to volume) because it measures classical uncertainty about the microstate. Entanglement entropy measures quantum correlations between A and its complement, which are strongest across the boundary separating them.
 
-The logarithmic violation in CFTs ($\gamma$ $\neq$ 0) is a signature of long-range correlations. The coefficient of the logarithmic term is proportional to the central charge c, which counts the degrees of freedom. This connection is formalized by the c-theorem in 2D: the central charge decreases along RG flows, and entanglement entropy provides a way to define a c-function [7].
+The logarithmic violation in CFTs ($\gamma \neq 0$) is a signature of long-range correlations. The coefficient of the logarithmic term is proportional to the central charge $c$, which counts the degrees of freedom. This connection is formalized by the c-theorem in 2D: the central charge decreases along RG flows, and entanglement entropy provides a way to define a c-function [7].
 
-The Calabrese-Cardy formula S = (c/3) ln($\ell$/$\epsilon$) shows that entanglement entropy grows logarithmically with interval length in 1+1 CFTs, reflecting the power-law decay of correlations. In higher dimensions, the leading area-law divergence dominates, but universal logarithmic terms appear for even-dimensional CFTs and depend on the geometry of the entangling surface.
+The Calabrese-Cardy formula $S = (c/3)\ln(\ell/\epsilon)$ shows that entanglement entropy grows logarithmically with interval length in 1+1 CFTs, reflecting the power-law decay of correlations. In higher dimensions, the leading area-law divergence dominates, but universal logarithmic terms appear for even-dimensional CFTs and depend on the geometry of the entangling surface.
 
 ## 6. Consistency Checks and Limiting Cases
 
@@ -218,7 +224,7 @@ $$
 S_A = \alpha \frac{\operatorname{Area}(\partial A)}{\epsilon^{d-2}} - \gamma + \mathcal{O}(e^{-R/\xi}),
 $$
 
-where $\gamma$ is the topological entanglement entropy for topologically ordered phases. For the toric code, $\gamma$ = ln 2, reflecting the quantum dimension of anyons [8].
+where $\gamma$ is the topological entanglement entropy for topologically ordered phases. For the toric code, $\gamma = \ln 2$, reflecting the quantum dimension of anyons [8].
 
 ### 6.3 Single Interval in Free Fermion Theory
 

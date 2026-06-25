@@ -29,7 +29,13 @@ $$
 Z = \int_{\mathcal{F}_\Lambda} \mathcal{D}\phi\, e^{-S_{\mathrm{UV}}[\phi]},
 $$
 
-where $\mathcal{F}_\Lambda$ denotes configurations with Fourier modes $\lvert\mathbf{p}\rvert < \Lambda$. Decompose $\phi = \phi_< + \phi_>$ where $\phi_<$ contains modes with $\lvert\mathbf{p}\rvert < \Lambda/b$ and $\phi_>$ contains modes in the shell $\Lambda/b < \lvert\mathbf{p}\rvert < \Lambda$ for $b > 1$.
+where $\mathcal{F}_{\Lambda}$ denotes configurations with Fourier modes $\lvert\mathbf{p}\rvert < \Lambda$. Decompose the field as
+
+$$
+\phi = \phi_{<} + \phi_{>},
+$$
+
+where the low-momentum component contains modes with $\lvert\mathbf{p}\rvert < \Lambda/b$ and the high-momentum component contains modes in the shell $\Lambda/b < \lvert\mathbf{p}\rvert < \Lambda$ for $b > 1$.
 
 The mass dimensions in $d = 4$: $[S] = 0$, $[\mathcal{L}] = 4$, $[\phi] = 1$, $[\psi] = 3/2$, $[A_\mu] = 1$. A coupling $g_i$ has $[g_i] = 4 - \Delta_i$ where $\Delta_i$ is the dimension of the associated operator. Natural units $\hbar = c = 1$ are used.
 
@@ -43,7 +49,7 @@ $$
 e^{-S_{\mathrm{eff}}[\phi_<]} = \int \mathcal{D}\phi_>\, e^{-S_{\mathrm{UV}}[\phi_< + \phi_>]}.
 $$
 
-After this integration, momenta are rescaled $\mathbf{p}' = b\mathbf{p}$ and fields $\phi_<' = b^{-[\phi]} \phi_<$ to restore the cutoff to $\Lambda$. The transformation $S_{\mathrm{UV}} \to S_b$ defines the RG transformation.
+After this integration, momenta are rescaled $\mathbf{p}' = b\mathbf{p}$ and fields $\phi_{<}' = b^{-[\phi]} \phi_{<}$ to restore the cutoff to $\Lambda$. The transformation $S_{\mathrm{UV}} \to S_b$ defines the RG transformation.
 
 The Wilson–Polchinski RG equation captures this flow functionally:
 

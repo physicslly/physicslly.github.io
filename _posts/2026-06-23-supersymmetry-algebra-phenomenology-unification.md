@@ -33,7 +33,17 @@ We use two-component Weyl spinor notation throughout. A left-handed Weyl spinor 
 
 The Pauli matrices are $\sigma^\mu_{\alpha\dot\beta} = (1, \sigma^i)$ and $\bar\sigma^{\mu\dot\alpha\beta} = (1, -\sigma^i)$. The metric is $(+,-,-,-)$.
 
-Superspace extends ordinary Minkowski spacetime by anticommuting Grassmann coordinates $\theta^\alpha$, $\bar\theta_{\dot\alpha}$ satisfying $\{\theta^\alpha, \theta^\beta\} = \{\bar\theta_{\dot\alpha}, \bar\theta_{\dot\beta}\} = \{\theta^\alpha, \bar\theta_{\dot\beta}\} = 0$.
+Superspace extends ordinary Minkowski spacetime by anticommuting Grassmann coordinates $\theta^\alpha$, $\bar\theta_{\dot\alpha}$ satisfying
+
+$$
+\{\theta^\alpha, \theta^\beta\}
+=
+\{\bar\theta_{\dot\alpha}, \bar\theta_{\dot\beta}\}
+=
+\{\theta^\alpha, \bar\theta_{\dot\beta}\}
+=
+0.
+$$
 
 A superfield $F(x,\theta,\bar\theta)$ is a function on superspace. Its component expansion terminates because of the Grassmann nature of $\theta$: for $N=1$ SUSY in $d=4$, the expansion terminates at $\theta^2\bar\theta^2$.
 

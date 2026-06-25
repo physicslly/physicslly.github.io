@@ -73,7 +73,17 @@ $$
 S_{\text{EH}} = \frac{1}{16\pi G} \int_M d^4x\, \sqrt{-g}\, (R - 2\Lambda) + S_{\text{GHY}} + S_{\text{matter}},
 $$
 
-where $S_{\text{GHY}}$ is the Gibbons–Hawking–York boundary term needed for a well-posed variational principle [5,6]. Varying with respect to $g^{\mu\nu}$ and using $\delta\sqrt{-g} = -\frac12 \sqrt{-g}\, g_{\mu\nu} \delta g^{\mu\nu}$ and the Palatini identity $\delta R_{\mu\nu} = \nabla_\lambda \delta\Gamma^\lambda_{\mu\nu} - \nabla_\nu \delta\Gamma^\lambda_{\mu\lambda}$, one obtains the Einstein equations
+where $S_{\text{GHY}}$ is the Gibbons–Hawking–York boundary term needed for a well-posed variational principle [5,6]. Varying with respect to $g^{\mu\nu}$ and using $\delta\sqrt{-g} = -\frac12 \sqrt{-g}\, g_{\mu\nu} \delta g^{\mu\nu}$ and the Palatini identity
+
+$$
+\delta R_{\mu\nu}
+=
+\nabla_\lambda \delta\Gamma^\lambda_{\mu\nu}
+-
+\nabla_\nu \delta\Gamma^\lambda_{\mu\lambda},
+$$
+
+one obtains the Einstein equations
 
 $$
 G_{\mu\nu} + \Lambda g_{\mu\nu} = 8\pi G\, T_{\mu\nu},

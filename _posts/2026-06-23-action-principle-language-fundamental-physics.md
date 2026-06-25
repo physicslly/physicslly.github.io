@@ -109,7 +109,17 @@ when only $g_{\mu\nu}$ is fixed on $\partial M$. This is the correct variational
 
 ## 5. Interpretation of the Main Equations
 
-**The Euler–Lagrange equations.** The equation $\partial\mathcal{L}/\partial\phi_a - \partial_\mu(\partial\mathcal{L}/\partial(\partial_\mu\phi_a)) = 0$ is a second-order PDE for each field $\phi_a$. The first term encodes forces from the field value itself, while the second term captures the dynamics of field gradients. For a scalar field with $\mathcal{L} = \frac12 (\partial\phi)^2 - V(\phi)$, this reduces to $\Box\phi + V'(\phi) = 0$ — the Klein–Gordon equation with a potential.
+**The Euler–Lagrange equations.** The equation
+
+$$
+\frac{\partial\mathcal{L}}{\partial\phi_a}
+-
+\partial_\mu\left(\frac{\partial\mathcal{L}}{\partial(\partial_\mu\phi_a)}\right)
+=
+0
+$$
+
+is a second-order PDE for each field $\phi_a$. The first term encodes forces from the field value itself, while the second term captures the dynamics of field gradients. For a scalar field with $\mathcal{L} = \frac12 (\partial\phi)^2 - V(\phi)$, this reduces to $\Box\phi + V'(\phi) = 0$ — the Klein–Gordon equation with a potential.
 
 **The GHY boundary term.** The extrinsic curvature $K = \nabla_\mu n^\mu$ measures how the normal to $\partial M$ changes as one moves along the boundary. Adding $S_{\text{GHY}}$ is not optional: without it, the variational problem for GR is ill-posed on manifolds with boundary, and the path integral for quantum gravity would be undefined.
 
@@ -125,7 +135,7 @@ when only $g_{\mu\nu}$ is fixed on $\partial M$. This is the correct variational
 
 **Constrained Hamiltonian systems.** When $\det(\partial^2 L/\partial\dot q_i\partial\dot q_j) = 0$, the Legendre transform is singular. Dirac's algorithm identifies first-class constraints (generating gauge transformations) and second-class constraints (reducing phase space dimension) [6]. Gauge theories and GR are the paradigmatic examples. For electromagnetism, $\pi^0 = 0$ is a primary constraint, and its consistency yields Gauss's law as a secondary constraint.
 
-**The BV formalism.** When the gauge algebra does not close off-shell or when the action has reducible symmetries, the BRST formalism must be extended. The BV formalism introduces an antibracket $(F,G)$ and the classical master equation (S,S)$ = 0$, which encodes gauge invariance [7]. This is essential for quantizing supergravity and the Green–Schwarz superstring.
+**The BV formalism.** When the gauge algebra does not close off-shell or when the action has reducible symmetries, the BRST formalism must be extended. The BV formalism introduces an antibracket $(F,G)$ and the classical master equation $(S,S)=0$, which encodes gauge invariance [7]. This is essential for quantizing supergravity and the Green–Schwarz superstring.
 
 **The quantum effective action.** The path integral $Z[J] = \int \mathcal{D}\phi\, e^{iS[\phi] + i\int J\phi}$ generates correlation functions. Its Legendre transform $\Gamma[\phi_{\text{cl}}]$ is the quantum effective action, whose stationary points encode the quantum-corrected equations of motion.
 

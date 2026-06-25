@@ -105,9 +105,31 @@ where $C_1$ is the sum of Chern numbers of occupied bands. The integer $C_1$ can
 
 ## 5. Interpretation of the Main Equations
 
-**The Chern number $C_1 = \frac{1}{2\pi} \int_\Sigma F \in \mathbb{Z}$.** The integral of the curvature over a closed surface is quantized because the bundle cannot be globally trivialized if it is topologically nontrivial. The integer $n$ counts how many times the transition function wraps around $U(1)$ on the overlap. This is the simplest example of a topological invariant that constrains locally defined quantities.
+**The Chern number.** The invariant is
 
-**The Berry curvature $\Omega_n(\mathbf{k}) = i \langle \nabla_{\mathbf{k}} u_n \rvert \times \lvert \nabla_{\mathbf{k}} u_n \rangle$.** The Berry curvature behaves like a magnetic field in parameter space. Its integral over closed surfaces gives Chern numbers. At points where the band gap closes (Dirac points), the Berry curvature has singularities that signal topological phase transitions.
+$$
+C_1
+=
+\frac{1}{2\pi}
+\int_\Sigma F
+\in
+\mathbb{Z}.
+$$
+
+The integral of the curvature over a closed surface is quantized because the bundle cannot be globally trivialized if it is topologically nontrivial. The integer $n$ counts how many times the transition function wraps around $U(1)$ on the overlap. This is the simplest example of a topological invariant that constrains locally defined quantities.
+
+**The Berry curvature.** The curvature is
+
+$$
+\Omega_n(\mathbf{k})
+=
+i
+\langle \nabla_{\mathbf{k}} u_n \rvert
+\times
+\lvert \nabla_{\mathbf{k}} u_n \rangle.
+$$
+
+The Berry curvature behaves like a magnetic field in parameter space. Its integral over closed surfaces gives Chern numbers. At points where the band gap closes (Dirac points), the Berry curvature has singularities that signal topological phase transitions.
 
 **The Atiyah–Singer index theorem.** For a Dirac operator $\not{D}$ on a compact even-dimensional manifold $M$ [6],
 

@@ -145,7 +145,13 @@ $$
 
 The vacuum is a superposition $\lvert\theta\rangle = \sum_{n} e^{i n\theta} \lvert n\rangle$, and the effective Lagrangian acquires a CP-violating term $\mathcal{L}_\theta = \theta\, (g^2/32\pi^2) F\tilde F$. The experimental bound $\lvert\theta\rvert \lesssim 10^{-10}$ is the strong CP problem, whose most plausible resolution is the Peccei–Quinn mechanism introducing the axion [6].
 
-**Spontaneous symmetry breaking.** For a scalar potential $V(\phi) = -\mu^2\lvert\phi\rvert^2 + \lambda\lvert\phi\rvert^4$, the minimum occurs at $\lvert\phi\rvert = v/\sqrt{2}$. Gauge bosons for broken generators acquire mass $m_A \sim gv$. In the SM, $SU(2)_L \times U(1)_Y \to U(1)_{\mathrm{em}}$ gives masses to $W^\pm$ and $Z^0$.
+**Spontaneous symmetry breaking.** For a scalar potential $V(\phi) = -\mu^2\lvert\phi\rvert^2 + \lambda\lvert\phi\rvert^4$, the minimum occurs at $\lvert\phi\rvert = v/\sqrt{2}$. Gauge bosons for broken generators acquire mass $m_A \sim gv$. In the SM, the breaking pattern is
+
+$$
+SU(2)_{L} \times U(1)_{Y} \to U(1)_{\mathrm{em}},
+$$
+
+which gives masses to $W^\pm$ and $Z^0$.
 
 **Grand unification.** The SM gauge couplings run with energy. In $SU(5)$ GUT, the apparent unification at $M_{\mathrm{GUT}} \sim 3 \times 10^{16}$ GeV (with supersymmetric particle content) is suggestive but depends on threshold corrections and scheme choices [7].
 

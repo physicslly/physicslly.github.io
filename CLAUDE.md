@@ -2,97 +2,73 @@
 
 ## Project Context
 
-This repository is a Jekyll Chirpy Starter blog.
+This repository is the Jekyll Chirpy source for the `physicslly` physics blog.
 
 Production URL:
 
 https://physicslly.github.io/
 
-This is a GitHub Pages user site, not a project site.
-
-Keep these settings in `_config.yml`:
+This is a GitHub Pages user site. Keep these settings in `_config.yml` unless the user explicitly asks for a deployment change:
 
 ```yaml
 url: "https://physicslly.github.io"
 baseurl: ""
 ```
 
-Do not use a custom domain.
+Do not use a custom domain. Do not create or modify `CNAME`.
 
-Do not create or modify `CNAME`.
+The blog identity is:
 
-Do not edit `_site/` because it is generated output.
+- Name: `physicslly`
+- Theme: theoretical physics and the search for a Theory of Everything
+- Scope: quantum field theory, general relativity, quantum gravity, gauge theory, topology, geometry, cosmology, renormalization, effective field theory, and mathematical physics
 
-## Blog Identity
-
-Blog name:
-
-physicslly
-
-Tagline:
-
-Theory of Everything
-
-Niche:
-
-Physics, theoretical physics, mathematical physics, quantum field theory, general relativity, quantum gravity, cosmology, gauge theory, topology, geometry, renormalization, effective field theory, and the search for unification.
-
-Important positioning:
-
-The phrase "Theory of Everything" is used as a thematic direction, not as a solved claim.
-
-Never claim that this blog has solved the Theory of Everything.
-
-Treat the Theory of Everything as an open research direction involving unification, quantum gravity, quantum field theory, geometry, cosmology, and mathematical physics.
+"Theory of Everything" is a research direction, not a solved claim. Never write as if the blog has solved unification.
 
 ## Protected Files
 
-Do not modify these unless explicitly asked:
+Do not modify these unless explicitly requested:
 
+- `_site/`
+- `_config.yml`
+- `.github/workflows/`
 - `privacy-policy.md`
 - `disclaimer.md`
 - `_includes/footer.html`
 - `ads.txt`
 - `robots.txt`
 - sitemap configuration
-- AdSense script
-- GitHub Actions workflow
+- AdSense scripts or snippets
 - `CNAME`
-- `_site/`
+
+Generated output in `_site/` must never be edited by hand.
 
 ## Article Style
 
-All new articles must be written in research-paper style.
-
-Every article should feel like advanced theoretical physics lecture notes, a mini review paper, or a research-style exposition.
+Articles must read like advanced theoretical physics lecture notes, mini review papers, or research-style expositions.
 
 Use an academic tone:
 
 - precise
 - formal
 - rigorous
-- careful
+- careful about assumptions
 - no hype
 - no clickbait
 - no fake certainty
-- no fake citations
-- no fake DOI
-- no fake arXiv IDs
-- no fake journal metadata
-- no unsupported research claims
+- no unsupported claims
+- no fake citations, DOI values, arXiv IDs, authors, or journal metadata
 
-Do not write shallow popular-science summaries.
-
-Do not claim that open research problems are solved.
+Do not write shallow popular-science summaries. Do not claim that open research problems are solved.
 
 ## Article Structure
 
-Every new Physics article must include:
+New physics articles should normally use this structure:
 
 ```md
 ## Abstract
 
-## Keywords
+**Keywords:** keyword one, keyword two, keyword three
 
 ## 1. Introduction
 
@@ -117,15 +93,12 @@ Every new Physics article must include:
 ## References
 ```
 
-## Depth Requirements
-
-Each article should be suitable for advanced graduate or PhD-level readers.
+Use inline `**Keywords:** ...` rather than a standalone `## Keywords` heading unless an existing post's local style clearly requires otherwise.
 
 Each article must include:
 
 - precise definitions
-- assumptions
-- notation
+- assumptions and notation
 - mathematical setup
 - at least one serious derivation
 - key equations
@@ -136,15 +109,9 @@ Each article must include:
 - common pitfalls
 - references
 
-Target article length:
+## Front Matter
 
-3000–5000 words.
-
-Do not add filler just to reach word count.
-
-## Front Matter Template
-
-Use this front matter style for every new article:
+Use this Chirpy front matter style for every new physics article:
 
 ```yaml
 ---
@@ -159,32 +126,22 @@ math: true
 
 Rules:
 
+- Use Asia/Singapore time.
+- Use the `+0800` timezone offset.
+- Do not use future timestamps.
+- Prefer `00:01:00 +0800` on the current Singapore date, or yesterday's date if unsure.
 - Use Physics-focused categories only.
-- Use lowercase tags only.
-- Do not use old tech/Linux/cybersecurity tags.
-- Do not use future dates.
-- Preserve valid Chirpy front matter.
-- Always include `math: true`.
-
-Date rule:
-Use Asia/Singapore time for all new post dates.
-
-The front matter date must use the +0800 timezone offset.
-
-Never use a future timestamp. To avoid Jekyll skipping posts as future-dated, use a timestamp that has definitely already passed, preferably 00:01:00 +0800 on the current Singapore date, or yesterday's date if unsure.
-
-Example:
-date: YYYY-MM-DD 00:01:00 +0800
-
-Never use fixed future-prone times like 10:00:00 +0800 unless that time has already passed.
+- Use lowercase kebab-case tags only.
+- Do not use spaces, uppercase letters, or old tech/Linux/cybersecurity tags in tags.
+- Always include `math: true` for posts containing equations or LaTeX.
 
 ## Mandatory Math Rendering Hard Gate
 
 Before finishing any article-generation or article-editing task, perform a strict math rendering check.
 
-This is mandatory. Do not finish, commit, or report success if raw LaTeX remains visible in prose.
+Do not finish, commit, push, or report success if raw LaTeX remains visible in prose or if equations are rendered as code blocks.
 
-Common broken patterns that must be fixed:
+Common broken patterns:
 
 - `T_{\mu\nu}` outside math mode
 - `\partial^{\mu}` outside math mode
@@ -193,26 +150,21 @@ Common broken patterns that must be fixed:
 - `\ell_i` outside math mode
 - `\langle ... \rangle` outside math mode
 - `\frac{...}{...}` outside math mode
-- equations written directly inside bullet lists without display math
+- `\begin{aligned}` outside display math
+- equations inside triple-backtick code fences
+- equations indented by four spaces
+- normal prose indented by four spaces
 - long formulas written inline
-- display equations mixed with prose on the same line
-- indented math that becomes a grey code block
+- display math mixed with prose on the same line
+- display math inside Markdown tables
 
-Correct examples:
-
-Inline symbols must use `$...$`:
+Correct inline math:
 
 ```md
 The stress-energy tensor $T_{\mu\nu}$ is conserved, so $\partial^\mu T_{\mu\nu}=0$.
 ```
 
-Operators must use `$...$`:
-
-```md
-A primary operator $\mathcal{O}_i(x)$ has scaling dimension $\Delta_i$ and spin $\ell_i$.
-```
-
-Long correlation functions must use display math:
+Correct display math:
 
 ```md
 The two-point function takes the form
@@ -224,29 +176,28 @@ $$
 $$
 ```
 
-Long three-point functions must use display math and `aligned`:
+Correct multi-line display math:
 
 ```md
 $$
 \begin{aligned}
-\langle
-\mathcal{O}_i(x_1)
-\mathcal{O}_j(x_2)
-\mathcal{O}_k(x_3)
-\rangle
+S
 &=
-\frac{C_{ijk}}
-{|x_{12}|^{\Delta_i+\Delta_j-\Delta_k}
- |x_{23}|^{\Delta_j+\Delta_k-\Delta_i}
- |x_{13}|^{\Delta_k+\Delta_i-\Delta_j}}.
+S_{\mathrm{EH}}
++
+S_{\mathrm{matter}}, \\
+S_{\mathrm{EH}}
+&=
+\frac{1}{16\pi G}
+\int d^4x\,\sqrt{-g}\,(R-2\Lambda).
 \end{aligned}
 $$
 ```
 
-Bullet lists must not contain raw LaTeX. Bad:
+Bad:
 
 ```md
-- Primary operators \mathcal{O}\_i(x) of scaling dimension \Delta_i.
+- Primary operators \mathcal{O}_i(x) of scaling dimension \Delta_i.
 ```
 
 Good:
@@ -255,286 +206,82 @@ Good:
 - Primary operators $\mathcal{O}_i(x)$ of scaling dimension $\Delta_i$.
 ```
 
-Before finishing, run this strict audit:
-
-````bash
-python - <<'PY'
-from pathlib import Path
-import re
-
-latex_cmd = re.compile(
-    r'\\(frac|sum|int|ell|mu|nu|alpha|beta|gamma|delta|theta|lambda|partial|nabla|mathcal|mathrm|operatorname|langle|rangle|left|right|begin|end|sqrt|Lambda|Omega|rho|phi|psi|Gamma|sigma|equiv|cdot|times|infty|leq|geq|Delta|Phi|Psi)'
-)
-
-banned_delimiters = re.compile(r'\\\(|\\\)|\\\[|\\\]')
-
-def strip_front_matter(text):
-    if text.startswith('---'):
-        parts = text.split('---', 2)
-        if len(parts) >= 3:
-            return parts[2]
-    return text
-
-def outside_inline_segments(line):
-    parts = line.split('$')
-    for i, part in enumerate(parts):
-        if i % 2 == 0:
-            yield part
-
-issues = 0
-
-for path in sorted(Path("_posts").glob("*.md")):
-    text = strip_front_matter(path.read_text())
-    in_code = False
-    in_display = False
-
-    for n, line in enumerate(text.splitlines(), 1):
-        stripped = line.strip()
-
-        if stripped.startswith("```"):
-            in_code = not in_code
-            continue
-
-        if in_code:
-            continue
-
-        if stripped == "$$":
-            in_display = not in_display
-            continue
-
-        if "$$" in line and stripped != "$$":
-            print(f"INLINE_DISPLAY_MATH {path}:{n}: {line[:240]}")
-            issues += 1
-
-        if not in_display and line.count("$") % 2 == 1:
-            print(f"UNBALANCED_DOLLAR {path}:{n}: {line[:240]}")
-            issues += 1
-
-        if not in_display and banned_delimiters.search(line):
-            print(f"BANNED_LATEX_DELIMITER {path}:{n}: {line[:240]}")
-            issues += 1
-
-        if not in_display:
-            for segment in outside_inline_segments(line):
-                if latex_cmd.search(segment):
-                    print(f"RAW_LATEX_OUTSIDE_MATH {path}:{n}: {line[:240]}")
-                    issues += 1
-                    break
-
-        for m in re.finditer(r'\$([^$]{100,})\$', line):
-            print(f"LONG_INLINE_MATH {path}:{n}: {m.group(0)[:240]}")
-            issues += 1
-
-        if line.count("\\left") != line.count("\\right"):
-            print(f"LEFT_RIGHT_MISMATCH {path}:{n}: {line[:240]}")
-            issues += 1
-
-        if re.search(r'^\s{4,}.*(\\|\$|theta|lambda|mu|nu|ell|Delta|mathcal)', line):
-            print(f"POSSIBLE_CODE_BLOCK_MATH {path}:{n}: {line[:240]}")
-            issues += 1
-
-print(f"TOTAL_STRICT_MATH_ISSUES={issues}")
-
-if issues:
-    raise SystemExit(1)
-PY
-````
-
-If the audit fails:
-
-1. Open the exact reported file and line.
-2. Convert raw LaTeX symbols into inline math using `$...$`.
-3. Convert long formulas into display math.
-4. Use `aligned` for long equations.
-5. Rebuild the site.
-6. Rerun the strict audit.
-7. Repeat until `TOTAL_STRICT_MATH_ISSUES=0`.
-
-Do not treat real raw LaTeX as a false positive.
-
-Only false positives inside intentional code examples are allowed.
-
 ## Math Rendering Rules
 
-This blog uses Jekyll/Chirpy math rendering. Math must be written carefully so formulas render correctly in the browser.
+This site uses Chirpy math rendering. Write math so it renders cleanly in the browser.
 
-Every Physics post must include:
+Inline math:
 
-```yaml
-math: true
+- Use `$...$` only for short expressions.
+- Keep inline math on one line.
+- Prefer `$Q_{\mathrm{BRST}}$`, `$H^0(Q)$`, `$g_{\mu\nu}$`, `$SU(N)$`.
+
+Display math:
+
+- Use display math for important or long equations.
+- Put a blank line before and after every display equation.
+- Put `$$` alone on its own line.
+- Use `aligned` inside `$$ ... $$` for multi-line equations.
+
+Never:
+
+- leave LaTeX commands outside math mode
+- use raw `\[` or `\]`
+- use raw `\(...\)`
+- place `$$...$$` inside prose lines
+- indent equations with four spaces
+- indent normal paragraphs with four spaces
+- wrap equations in triple backticks
+- put equations in Markdown code blocks
+- leave unmatched `\begin{...}` / `\end{...}`
+- leave unmatched `\left` / `\right`
+
+## 2-Pass Math-Rendering Process
+
+Use this process for every article creation or math-related edit.
+
+Pass 1:
+
+1. Read the affected Markdown source.
+2. Fix obvious raw LaTeX outside math mode.
+3. Convert long inline equations into display math.
+4. Convert multi-line equations into `aligned` display math.
+5. Remove triple-backtick or indented code-block formatting around equations.
+
+Pass 2:
+
+1. Run the strict math audit.
+2. Inspect every reported line.
+3. Fix real issues in source Markdown.
+4. Rebuild the site.
+5. Inspect generated HTML when code-block rendering is suspected.
+6. Repeat until no real math-rendering issue remains in the affected scope.
+
+## Mandatory Strict Math Audit
+
+Run the repository audit if it exists:
+
+```bash
+python scripts/strict_math_audit.py --all || python scripts/strict_math_audit.py || true
 ```
 
-Use inline math only for short expressions:
+If the script reports real issues in the affected file, fix them. If `--all` is unsupported, the fallback command is expected.
 
-```md
-The coupling $g(\mu)$ runs with the scale $\mu$.
-```
+When a local inline audit is needed, use checks that catch at least:
 
-Use display math for important equations:
+- raw LaTeX outside math mode
+- `INLINE_DISPLAY_MATH`
+- `UNBALANCED_DOLLAR`
+- `BANNED_LATEX_DELIMITER`
+- `LONG_INLINE_MATH`
+- `LEFT_RIGHT_MISMATCH`
+- `POSSIBLE_CODE_BLOCK_MATH`
 
-```md
-The beta function is defined as
-
-$$
-\beta(g)
-=
-\mu \frac{dg}{d\mu}.
-$$
-
-This expression describes the response of the coupling to a change of scale.
-```
-
-Use `aligned` for long or multi-line equations:
-
-```md
-$$
-\begin{aligned}
-S
-&=
-S_{\mathrm{SM}}
-+
-S_{\mathrm{EH}}
-+
-S_{\mathrm{beyond}}, \\
-S_{\mathrm{EH}}
-&=
-\frac{c^3}{16\pi G}
-\int d^4x\,\sqrt{-g}\,(R-2\Lambda).
-\end{aligned}
-$$
-```
-
-Strict math rules:
-
-- Never leave LaTeX commands outside math mode.
-- Never use long inline equations.
-- Never put `$$...$$` inside a paragraph line.
-- `$$` must appear alone on its own line.
-- Always add a blank line before and after display equations.
-- Do not indent equations with four spaces.
-- Do not indent normal paragraphs with four spaces.
-- Do not wrap equations in backticks.
-- Do not place equations inside code blocks unless explaining literal syntax.
-- Use `aligned` for wide equations.
-- Avoid horizontal overflow.
-- Avoid malformed LaTeX.
-- Every `\begin{aligned}` must have matching `\end{aligned}`.
-- Every `\left` must have matching `\right`.
-
-Bad:
-
-```md
-The equation is $$G_{\mu\nu}=8\pi GT_{\mu\nu}$$ and it means curvature.
-```
-
-Good:
-
-```md
-The equation is
-
-$$
-G_{\mu\nu}
-=
-\frac{8\pi G}{c^4}
-T_{\mu\nu}.
-$$
-
-It relates spacetime curvature to stress-energy.
-```
-
-Bad:
-
-```md
-The expansion becomes θ
-
-    → −∞ at finite affine parameter \lambda \le 3/\theta_0.
-```
-
-Good:
-
-```md
-The expansion becomes $\theta \to -\infty$ at a finite affine parameter,
-
-$$
-\lambda
-\leq
-\frac{3}{|\theta_0|}.
-$$
-
-This implies that nearby null geodesics develop a caustic within finite affine parameter whenever $\theta_0 < 0$.
-```
-
-## Reference Rules
-
-Every article must include a `## References` section.
-
-Use numbered references:
-
-```md
-[1] Author, _Book or Paper Title_, Publisher or Journal, Year.
-```
-
-Use in-text citations like `[1]`, `[2]`, `[3]`.
-
-Rules:
-
-- Do not cite Wikipedia.
-- Do not cite random websites.
-- Prefer canonical textbooks, foundational papers, and standard review-style references.
-- Do not invent fake DOI.
-- Do not invent fake arXiv IDs.
-- Do not invent fake authors.
-- Do not invent fake journal metadata.
-- If exact metadata is uncertain, keep it conservative.
-
-## Topic Selection Rules
-
-Before creating a new article:
-
-1. Audit all existing published Physics posts in `_posts/`.
-2. Create a topic inventory.
-3. Identify already-covered frameworks, equations, and conceptual focus.
-4. Propose missing topic gaps.
-5. Choose a topic that does not duplicate existing articles.
-
-A topic is duplicate if it substantially overlaps in:
-
-- title
-- framework
-- equations
-- references
-- conceptual focus
-- intended reader takeaway
-
-Prefer advanced missing topics such as:
-
-- quantum anomalies
-- supersymmetry
-- spinors and Clifford algebras
-- conformal field theory
-- AdS/CFT correspondence
-- black hole thermodynamics
-- holographic principle
-- BRST symmetry
-- instantons
-- canonical quantization
-- Hamiltonian formulation of general relativity
-- singularity theorems
-- causal structure and Penrose diagrams
-- Noether currents and Ward identities
-- vacuum structure in QFT
-- geometric quantization
-- path integral measure and anomalies
-- modular Hamiltonians
-- tensor networks and holography
-- asymptotic symmetries
-- spontaneous symmetry breaking
-- Higgs mechanism
-- neutrino masses and beyond Standard Model physics
+Do not dismiss real raw LaTeX as a false positive. Only intentional literal syntax examples inside code fences may be treated as false positives.
 
 ## Build Verification
 
-After creating or editing articles, always run:
+After creating or editing articles, run:
 
 ```bash
 rm -rf .jekyll-cache _site
@@ -544,221 +291,78 @@ bundle exec jekyll build 2>&1 | tee /tmp/jekyll-build.log
 Then check:
 
 ```bash
-grep -Ei "Conflict|Skipping|Error|Warning" /tmp/jekyll-build.log || true
-find _site -maxdepth 4 -type f -name "index.html" | grep "/posts/" | wc -l
-grep -c "<loc>" _site/sitemap.xml
-grep -RIn "math: true" _posts | wc -l
+grep -Ei "Error|Warning|Conflict|Skipping" /tmp/jekyll-build.log || true
 ```
 
-Expected:
-
-- No build errors.
-- No future-date skipping.
-- No conflict warnings.
-- Sitemap updates correctly.
-- New articles appear in `_site`.
-
-## Required Math Audit After Writing
-
-After creating or editing an article, run this audit to detect likely math rendering problems:
-
-````bash
-python - <<'PY'
-from pathlib import Path
-import re
-
-latex_cmd = re.compile(
-    r'\\(frac|sum|int|ell|mu|nu|alpha|beta|gamma|delta|theta|lambda|partial|nabla|mathcal|mathrm|operatorname|langle|rangle|left|right|begin|end|sqrt|Lambda|Omega|rho|phi|psi|Gamma|sigma|equiv|cdot|times|infty|leq|geq)'
-)
-
-def strip_front_matter(text):
-    if text.startswith('---'):
-        parts = text.split('---', 2)
-        if len(parts) >= 3:
-            return parts[2]
-    return text
-
-def in_inline_math(line, idx):
-    before = line[:idx]
-    return before.count('$') % 2 == 1
-
-issues = 0
-
-for path in sorted(Path("_posts").glob("*.md")):
-    text = strip_front_matter(path.read_text())
-    in_code = False
-    in_display = False
-
-    for n, line in enumerate(text.splitlines(), 1):
-        stripped = line.strip()
-
-        if stripped.startswith("```"):
-            in_code = not in_code
-            continue
-
-        if in_code:
-            continue
-
-        if stripped == "$$":
-            in_display = not in_display
-            continue
-
-        if not in_display and line.count("$") % 2 == 1:
-            print(f"UNBALANCED_DOLLAR {path}:{n}: {line[:240]}")
-            issues += 1
-
-        if "$$" in line and stripped != "$$":
-            print(f"INLINE_DISPLAY_MATH {path}:{n}: {line[:240]}")
-            issues += 1
-
-        for m in latex_cmd.finditer(line):
-            if not in_display and not in_inline_math(line, m.start()):
-                print(f"LATEX_OUTSIDE_MATH {path}:{n}: {line[:240]}")
-                issues += 1
-
-        for m in re.finditer(r'\$([^$]{100,})\$', line):
-            print(f"LONG_INLINE_MATH {path}:{n}: {m.group(0)[:240]}")
-            issues += 1
-
-        if line.count("\\left") != line.count("\\right"):
-            print(f"LEFT_RIGHT_MISMATCH {path}:{n}: {line[:240]}")
-            issues += 1
-
-print(f"TOTAL_ISSUES={issues}")
-PY
-````
-
-Also run this audit for accidental Markdown code blocks around math:
+When relevant, also check generated post HTML:
 
 ```bash
-python - <<'PY'
-from pathlib import Path
-import re
-
-patterns = [
-    r'^\s{4,}.*\\',
-    r'^\t+.*\\',
-    r'^\s{4,}.*\$',
-    r'^\t+.*\$',
-    r'^\s{4,}.*theta',
-    r'^\s{4,}.*lambda',
-    r'^\s{4,}.*ell',
-    r'^\s{4,}.*mu',
-    r'^\s{4,}.*nu',
-]
-
-for path in sorted(Path("_posts").glob("*.md")):
-    lines = path.read_text().splitlines()
-    for i, line in enumerate(lines, 1):
-        for pat in patterns:
-            if re.search(pat, line):
-                print(f"POSSIBLE_CODE_BLOCK_MATH {path}:{i}: {line[:240]}")
-PY
+grep -RInE "<pre>|<code>|```" _site/posts || true
 ```
 
-If issues are found:
+Interpret raw LaTeX in generated HTML carefully: MathJax may render client-side. Fix source Markdown only when the Markdown syntax is malformed or math is inside `<pre>` or `<code>`.
 
-- inspect the exact file and line
-- fix the source Markdown
-- rebuild
-- rerun the math audit
-- repeat until clean or until only justified false positives remain
+## Topic Selection Rules
 
-## Final Response Requirements
+Before creating a new article:
 
-After each task, report:
+1. Audit existing `_posts/` filenames.
+2. Inspect front matter titles, tags, and headings.
+3. Do not read full existing posts unless the user explicitly asks for a content audit.
+4. Choose a topic that does not duplicate existing posts.
 
-1. Files created or edited.
-2. Article titles created or improved.
-3. Topic inventory summary.
-4. Why the chosen topic is not duplicate.
-5. Whether `math: true` was used.
-6. References added.
-7. Build result.
-8. Math audit result.
-9. Any warnings or false positives.
-10. Local preview command:
+A topic is duplicate if it substantially overlaps in:
 
-```bash
-bundle exec jekyll serve
+- title
+- slug
+- framework
+- core equations
+- conceptual focus
+- intended reader takeaway
+
+## Reference Rules
+
+Every article must include `## References`.
+
+Use numbered references:
+
+```md
+[1] Author, _Book or Paper Title_, Publisher or Journal, Year.
 ```
 
-11. Local preview URL:
+Rules:
 
-```text
-http://127.0.0.1:4000/
-```
+- Use in-text citations like `[1]`, `[2]`.
+- Prefer canonical textbooks, foundational papers, and standard review references.
+- Do not cite Wikipedia.
+- Do not cite random websites.
+- Do not invent DOI values, arXiv IDs, authors, journal metadata, or publication details.
+- If exact metadata is uncertain, keep the citation conservative.
 
-## Reusable Article Creation Workflow
+## GitHub Actions Article Automation Rules
 
-When I ask to create a new article, always follow this workflow:
+Automation that creates articles must:
 
-1. Read CLAUDE.md first.
-2. Audit existing posts in `_posts/`.
-3. Build a topic inventory.
-4. Identify already-covered topics and missing topic gaps.
-5. Choose only topics that do not duplicate existing articles.
-6. Create exactly the number of articles requested.
-7. Write each article in research-paper style.
-8. Use `math: true`.
-9. Use display math for important equations.
-10. Use `aligned` for wide equations.
-11. Never leave LaTeX commands outside math mode.
-12. Never indent normal paragraphs or equations with four spaces.
-13. Run a clean build.
-14. Run the math audit scripts from CLAUDE.md.
-15. Fix all real math-rendering issues before finishing.
-16. If the audit reports false positives, explain why they are false positives.
-17. Recommend manual browser review for posts with heavy equations.
+- read and follow this `CLAUDE.md`
+- create exactly one new `_posts/*.md` file per run
+- never edit `_site/`
+- never edit existing posts unless explicitly requested
+- never edit protected files
+- never edit GitHub Actions workflows unless explicitly requested
+- use `math: true`
+- use Asia/Singapore `+0800`
+- avoid future timestamps
+- run `git status --short _posts`
+- fail or report clearly if no post file was created
+- fail or report clearly if more than one post file was created
+- fail or report clearly if raw LaTeX remains outside math mode
+- stop after writing and verification; do not commit or push unless explicitly requested
 
-Standard reusable prompt:
+## Final Safety Rules
 
-"Read and follow CLAUDE.md. Review existing Physics posts first, identify topic gaps, then create exactly 1 new PhD-level theoretical physics article that does not duplicate existing articles. After writing, build the site and run the math-rendering audits from CLAUDE.md. Fix all real LaTeX/rendering issues before finishing. Recommend which article pages need manual browser review for heavy equations."
-
-## GitHub Actions Article Automation
-
-This repository may use GitHub Actions to run Claude Code automatically.
-
-When Claude is executed from GitHub Actions, follow these rules:
-
-1. Read `CLAUDE.md` first.
-2. Treat the repository root as the source of truth.
-3. Create exactly 1 new article per workflow run unless the prompt explicitly requests a different number.
-4. The scheduled workflow may run every 12 hours, so the expected output is 2 articles per 24 hours.
-5. Always audit existing posts before choosing a topic.
-6. Build a topic inventory before writing.
-7. Never duplicate existing article topics.
-8. Never edit `_site/`.
-9. Never modify protected files unless explicitly requested.
-10. Only create or edit Markdown posts inside `_posts/` during article-generation runs.
-11. Use valid Chirpy front matter.
-12. Use `math: true` in every new Physics article.
-13. Use Physics-focused categories only.
-14. Use lowercase tags only.
-15. Do not use future dates.
-16. Treat the Theory of Everything as an open research direction, not a solved claim.
-17. Run the Jekyll build after writing.
-18. Run the math-rendering audit scripts from this file.
-19. Fix all real LaTeX/rendering issues before finishing.
-20. If the audit reports false positives, explain why they are false positives.
-21. Recommend manual browser review for equation-heavy posts.
-22. Treat the article as a draft that will be reviewed through a Pull Request.
-
-Default GitHub Actions article prompt:
-
-"Read and follow CLAUDE.md. Review existing Physics posts first, identify topic gaps, then create exactly 1 new PhD-level theoretical physics article that does not duplicate existing articles. After writing, build the site and run the math-rendering audits from CLAUDE.md. Fix all real LaTeX/rendering issues before finishing. Recommend which article pages need manual browser review for heavy equations."
-
-## 2-Pass Math-Rendering Process (GitHub Actions)
-
-The GitHub Actions article workflow (`claude-article.yml`) uses a 2-pass math-rendering gate to prevent PR creation when generated articles contain broken LaTeX:
-
-1. **Claude creates the article.** The `Run Claude article prompt` step executes Claude with the article-generation prompt.
-2. **Non-fatal strict math audit.** A Python script (`scripts/strict_math_audit.py`) audits only the changed/new posts using `--changed-only`. If issues are found, the step reports them but does not fail the workflow (`continue-on-error: true`). The audit log is saved to `/tmp/math-audit.log`.
-3. **Claude fix pass (conditional).** If the non-fatal audit failed, the `Claude fix math rendering issues` step runs. It creates a temporary prompt containing the audit report and calls Claude again with instructions to fix only the reported math-rendering issues. Max 15 turns.
-4. **Fatal final strict math audit.** After the fix pass, the final audit runs. This step does NOT use `continue-on-error` — it blocks the workflow if any real math issue remains.
-5. **Commit and PR creation.** Commit and PR steps only execute if the final strict math audit passes.
-
-Key rules:
-- Do not report success if raw LaTeX remains visible outside math mode.
-- The 2-pass audit applies only to the `claude-article.yml` workflow, not to manual local article creation.
-- `scripts/strict_math_audit.py` accepts `--changed-only` to audit only files modified in the working tree.
+- Do not create a new article unless the task asks for one.
+- Do not rewrite whole articles for narrow fixes.
+- Do not change physics meaning when fixing rendering.
+- Do not edit generated output in `_site/`.
+- Do not commit.
+- Do not push.

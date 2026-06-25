@@ -63,11 +63,17 @@ $$
 \langle T_{\mu\nu}(x) T_{\rho\sigma}(0) \rangle = \frac{C_{T}}{x^{2d}} \mathcal{I}_{\mu\nu\rho\sigma}(x),
 $$
 
-with $\mathcal{I}_{\mu\nu\rho\sigma}$ a project onto the independent tensor structures. The central charge $C_{T}$ serves as a measure of the number of degrees of freedom.
+with tensor structure
+
+$$
+\mathcal{I}_{\mu\nu\rho\sigma}
+$$
+
+projecting onto the independent components. The central charge $C_{\mathrm{T}}$ serves as a measure of the number of degrees of freedom.
 
 Key notions we shall use:
 
-- **Primary operators $\mathcal{O}_{i}(x)$** of scaling dimension $\Delta_{i}$ and Lorentz spin $\ell_{i}$. Their correlation functions are constrained by conformal Ward identities.
+- **Primary operators** are denoted by $\mathcal{O}_{i}(x)$. Their scaling dimensions and Lorentz spins constrain their correlation functions through conformal Ward identities.
 - **Two‑point function**
 
 $$
@@ -125,7 +131,7 @@ For conserved currents (spin‑1), the bulk gauge field $A_{M}$ with massless dy
 
 ### 3.2 Higher‑Spin Correlators
 
-The higher‑spin gravity theory in AdS$_{d+1}$ features fields $h_{m,i}$ with mass squared determined by the Poincaré lemma. The cubic interaction term in the Lagrangian is
+The higher‑spin gravity theory in anti-de Sitter space features fields $h_{m,i}$ with mass squared determined by the Poincaré lemma. The cubic interaction term in the Lagrangian is
 
 $$
 \mathcal{L}_{\text{cubic}} = \kappa \int d^{d+1}x \sqrt{-g} \, \epsilon_{m_1\ldots m_{d+1}} h^{m_1} \wedge \cdots \wedge h^{m_d} \wedge \star d h^{m_{d+1}},
