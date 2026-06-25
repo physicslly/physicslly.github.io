@@ -23,6 +23,25 @@ Hard requirements:
 - Treat Theory of Everything as an open research direction, not a solved claim.
 - Do not invent fake references, fake DOI, fake arXiv IDs, fake authors, or fake journal metadata.
 
+Create exactly one new article.
+
+Do not read full existing posts. Only inspect:
+
+- file names in \_posts/
+- front matter titles
+- tags
+- headings
+
+Avoid duplicate topics based on title and slug only.
+
+Write one article around 1800–2500 words.
+Use valid Chirpy front matter.
+Use lowercase kebab-case tags only.
+Do not use spaces in tags.
+Do not edit \_site/.
+Do not edit existing posts.
+After writing, stop.
+
 Math rendering:
 
 - Follow all math rendering rules in CLAUDE.md.

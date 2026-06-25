@@ -70,7 +70,7 @@ jobs:
           claude -p "$(cat .github/prompts/create-physics-article.md)" \
             --permission-mode bypassPermissions \
             --allowedTools "Read,Edit,MultiEdit,Write,Bash" \
-            --max-turns 45
+            --max-turns 90
 
       # ---- 2-Pass Math Rendering Gate ----
       # Pass 1: Non-fatal audit — if it fails, Claude gets a fix pass.
