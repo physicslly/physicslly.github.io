@@ -190,8 +190,18 @@ jobs:
             exit 1
           fi
 
-          echo "Checking for known fragile MathJax patterns in generated article source..."
-          if grep -RInE '\\gamma_\*|\|0\\rangle|\$\|.*\\rangle|\\\(|\\\]' "$HTML_DIR"; then
+          # Raw \[...\] / \(...\) delimiters are banned in source Markdown.
+          # They must be checked in "$NEW_POST".
+          # Do not reject generated HTML just because it contains \[ or \],
+          # because the theme/MathJax pipeline may emit those wrappers.
+          echo "Checking source Markdown for banned fragile math patterns..."
+          if grep -nE '\\gamma_\*|\|0\\rangle|\$\|.*\\rangle|\\\(|\\\)|\\\[|\\\]' "$NEW_POST"; then
+            echo "::error::Fragile or banned math pattern found in source Markdown."
+            exit 1
+          fi
+
+          echo "Checking generated HTML for fragile source patterns only..."
+          if grep -RInE '\\gamma_\*|\|0\\rangle|\$\|.*\\rangle' "$HTML_DIR"; then
             echo "::error::Fragile math pattern found in generated HTML source."
             exit 1
           fi
