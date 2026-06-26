@@ -29,9 +29,19 @@ $$
 D = i\gamma^\mu (\partial_\mu + \tfrac{1}{4}\omega_\mu^{ab}\gamma_{ab}),
 $$
 
-where $\gamma_{ab} = \frac{1}{2}[\gamma_a, \gamma_b]$ and $\{\gamma^\mu, \gamma^\nu\} = 2g^{\mu\nu}$. The gamma matrices satisfy the Clifford algebra on $M$, and the chirality operator $\gamma_*$ is defined by $\gamma_ = i^{n}\gamma^0\gamma^1\cdots\gamma^{d-1}$ with $\gamma_2 = 1$.
+where $\gamma_{ab} = \frac{1}{2}[\gamma_a, \gamma_b]$ and $\{\gamma^\mu, \gamma^\nu\} = 2g^{\mu\nu}$. The gamma matrices satisfy the Clifford algebra on $M$. The chirality operator $\gamma_*$ is defined by
 
-The space of square-integrable spinor fields is denoted $\mathcal{H} = L^2(M, S)$, and the chiral projectors are $P_\pm = \frac{1}{2}(1 \pm \gamma_)$. The Dirac operator maps positive chirality spinors to negative chirality spinors and vice versa, so the index of the twisted Dirac operator
+$$
+\gamma_*
+=
+i^{n}\gamma^0\gamma^1\cdots\gamma^{d-1},
+\qquad
+\gamma_*^2
+=
+1.
+$$
+
+The space of square-integrable spinor fields is denoted $\mathcal{H} = L^2(M, S)$, and the chiral projectors are $P_\pm = \frac{1}{2}(1 \pm \gamma_*)$. The Dirac operator maps positive chirality spinors to negative chirality spinors and vice versa, so the index of the twisted Dirac operator
 
 $$
 \mathrm{Ind}(D_A) = \dim \ker D_A^+ - \dim \ker D_A^-
@@ -57,7 +67,7 @@ $$
 Z[A] = \int \mathcal{D}\psi \mathcal{D}\bar\psi \, e^{-S}.
 $$
 
-Under a local axial rotation $\psi \to e^{i\alpha(x)\gamma_}\psi$, $\bar\psi \to \bar\psi e^{i\alpha(x)\gamma_}$, the action is invariant classically, but the measure transforms with a Jacobian. Fujikawa's insight was to regulate this Jacobian using a basis of eigenfunctions of the Hermitian operator $H = i\gamma^\mu(\partial_\mu + A_\mu)\gamma_$.
+Under a local axial rotation $\psi \to e^{i\alpha(x)\gamma_*}\psi$, $\bar\psi \to \bar\psi e^{i\alpha(x)\gamma_*}$, the action is invariant classically, but the measure transforms with a Jacobian. Fujikawa's insight was to regulate this Jacobian using a basis of eigenfunctions of the Hermitian operator $H = i\gamma^\mu(\partial_\mu + A_\mu)\gamma_*$.
 
 Let $\phi_n$ be the eigenfunctions of $H$ with eigenvalues $\lambda_n$, so $H\phi_n = \lambda_n \phi_n$. Expanding $\psi(x) = \sum_n a_n \phi_n(x)$ and $\bar\psi(x) = \sum_n \bar b_n \phi_n^\dagger(x)$, the measure is $\prod_n da_n d\bar b_n$. Under the axial transformation, the coefficients transform as
 
@@ -65,7 +75,7 @@ $$
 a_n \to \sum_m C_{nm} a_m, \quad \bar b_n \to \sum_m \bar b_m C_{mn}^{-1},
 $$
 
-where $C_{nm} = \int d^4x \, \phi_n^\dagger(x) e^{i\alpha(x)\gamma_}\phi_m(x)$.
+where $C_{nm} = \int d^4x \, \phi_n^\dagger(x) e^{i\alpha(x)\gamma_*}\phi_m(x)$.
 
 The Jacobian determinant is computed by regulating with a Gaussian heat-kernel factor:
 
@@ -76,7 +86,10 @@ $$
 where $\tilde F^{\mu\nu} = \frac{1}{2}\epsilon^{\mu\nu\rho\sigma}F_{\rho\sigma}$ and the trace is over spinor and gauge indices. The regulated Jacobian yields the anomalous divergence of the axial current:
 
 $$
-\partial_\mu J^\mu_ = \frac{1}{16\pi^2} \mathrm{tr}\, F_{\mu\nu}\tilde F^{\mu\nu}.
+\partial_\mu J_5^\mu
+=
+\frac{1}{16\pi^2}
+\mathrm{tr}\, F_{\mu\nu}\tilde F^{\mu\nu}.
 $$
 
 This result is the chiral anomaly in four dimensions.
@@ -186,13 +199,13 @@ This matches the Fujikawa result and confirms the topological character of the a
 
 The key equations have immediate physical meaning:
 
-1. **The axial anomaly equation:** $\partial_\mu J^\mu_ = \frac{1}{16\pi^2}\mathrm{tr}\, F\tilde F$ shows that the divergence of the axial current is proportional to the Pontryagin density. The right-hand side is a total derivative, $\mathrm{tr}\, F\tilde F = \partial_\mu K^\mu$ with
+1. **The axial anomaly equation:** $\partial_\mu J_5^\mu = \frac{1}{16\pi^2}\mathrm{tr}\, F\tilde F$ shows that the divergence of the axial current is proportional to the Pontryagin density. The right-hand side is a total derivative, $\mathrm{tr}\, F\tilde F = \partial_\mu K^\mu$ with
 
 $$
 K^\mu = \epsilon^{\mu\nu\rho\sigma}\mathrm{tr}\left(A_\nu F_{\rho\sigma} - \frac{2}{3}A_\nu A_\rho A_\sigma\right),
 $$
 
-but on manifolds with non-trivial topology the charge $Q_ = \int d^3x\, J^0_$ is not conserved.
+but on manifolds with non-trivial topology the charge $Q_5 = \int d^3x\, J_5^0$ is not conserved.
 
 2. **The index theorem:** $\mathrm{Ind}(D_A) = \frac{1}{8\pi^2}\int \mathrm{tr}\, F \wedge F$ implies that zero modes of the Dirac operator are tied to the topology of the gauge bundle. Instanton configurations with non-zero Pontryagin index have asymmetric zero-mode spectra, leading to the 't Hooft effective interaction.
 
@@ -222,7 +235,7 @@ for hypercharge $Y$ is satisfied by the observed spectrum. This is not an accide
 
 For unified theories, anomaly cancellation within a simple gauge group is stronger still. All representations of $SU(N)$ have calculable anomaly coefficients. The condition that the total anomaly polynomial vanishes constrains the fermion content far more tightly than mere renormalizability. In string theory, anomaly cancellation is enforced by the Green-Schwarz mechanism, where a 2-form field $B$ absorbs the anomaly through a modified field strength. This mechanism requires the gauge group to be $SO(32)$ or $E_8 \times E_8$ in the heterotic string—a remarkable example of a topological consistency condition determining the low-energy gauge group.
 
-The index theorem also constrains the spectrum of fermions on manifolds with non-trivial topology. The Atiyah-Singer theorem implies that the difference between left- and right-handed zero modes is a topological This has implications for model building in extra dimensions: the number of generations in compactified string models is related to the Euler characteristic of the internal manifold, as in the Calabi-Yau case where
+The index theorem also constrains the spectrum of fermions on manifolds with non-trivial topology. The Atiyah-Singer theorem implies that the difference between left- and right-handed zero modes is a topological invariant. This has implications for model building in extra dimensions: the number of generations in compactified string models is related to the Euler characteristic of the internal manifold, as in the Calabi-Yau case where
 
 $$
 \frac{1}{2}\int_M c_3(TM) = \chi(M) = 2(h^{1,1} - h^{2,1}).

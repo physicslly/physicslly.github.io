@@ -8,6 +8,7 @@ Audits Markdown posts in _posts/ for common math rendering issues:
   - Display math placed inline inside prose ($$ on same line as text)
   - Unbalanced inline dollar signs
   - Long inline math expressions (over 100 chars inside a single $...$)
+  - Dangling math subscripts/superscripts (_ or ^ without a following token)
   - \left / \right mismatch
   - Accidental indented math that becomes a Markdown code block
 
@@ -34,6 +35,10 @@ LATEX_CMD_PATTERN = re.compile(
 
 # Banned LaTeX delimiters — should use $...$ and $$...$$ instead
 BANNED_DELIMITERS = re.compile(r"\\\(|\\\)|\\\[|\\\]")
+
+# A math script marker must be followed by a real script token, not whitespace,
+# punctuation, a closing delimiter, or end-of-segment.
+DANGLING_SCRIPT_PATTERN = re.compile(r"(?<!\\)([_^])(?=($|\s|[=,.;:\)\]\}]))")
 
 # For detecting accidental code blocks from indented math
 CODE_BLOCK_PATTERNS = [
@@ -106,6 +111,17 @@ def outside_inline_segments(line):
             yield part
 
 
+def math_segments(line, in_display):
+    """Yield Markdown math segments from *line*."""
+    if in_display:
+        yield line
+        return
+
+    parts = line.split("$")
+    for i in range(1, len(parts), 2):
+        yield parts[i]
+
+
 def audit_file(path, report):
     """Audit a single Markdown file. Append issues to *report*."""
     text = path.read_text(encoding="utf-8")
@@ -173,13 +189,21 @@ def audit_file(path, report):
                         f"LONG_INLINE_MATH {path}:{n}: ${segment[:240]}$"
                     )
 
-        # --- Check 6: \left / \right mismatch ---
+        # --- Check 6: dangling math subscript/superscript ---
+        for segment in math_segments(line, in_display):
+            if DANGLING_SCRIPT_PATTERN.search(segment):
+                report.append(
+                    f"DANGLING_SUBSCRIPT_OR_SUPERSCRIPT {path}:{n}: {line[:240]}"
+                )
+                break
+
+        # --- Check 7: \left / \right mismatch ---
         if line.count("\\left") != line.count("\\right"):
             report.append(
                 f"LEFT_RIGHT_MISMATCH {path}:{n}: {line[:240]}"
             )
 
-        # --- Check 7: accidental code block from indented math ---
+        # --- Check 8: accidental code block from indented math ---
         for pat in CODE_BLOCK_PATTERNS:
             if pat.search(line):
                 report.append(
