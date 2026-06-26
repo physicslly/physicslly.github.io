@@ -65,12 +65,58 @@ jobs:
           echo "ANTHROPIC_MODEL=$SELECTED_MODEL" >> "$GITHUB_ENV"
 
       - name: Run Claude article prompt
+        id: claude_article
+        continue-on-error: true
         timeout-minutes: 60
         run: |
           claude -p "$(cat .github/prompts/create-physics-article.md)" \
             --permission-mode bypassPermissions \
             --allowedTools "Read,Edit,MultiEdit,Write,Bash" \
-            --max-turns 90
+            --max-turns 120
+
+      - name: Handle Claude article generation result
+        run: |
+          echo "Claude article step outcome: ${{ steps.claude_article.outcome }}"
+          echo "Changed files in _posts after Claude:"
+          git status --short _posts || true
+
+          NEW_POST="$(git status --short _posts | awk '$1 == "??" && $2 ~ /^_posts\/.*\.md$/ {print $2; exit}')"
+          NEW_POST_COUNT="$(git status --short _posts | awk '$1 == "??" && $2 ~ /^_posts\/.*\.md$/ {count++} END {print count+0}')"
+          MODIFIED_POST_COUNT="$(git status --short _posts | awk '$1 != "??" {count++} END {print count+0}')"
+
+          echo "New post count: $NEW_POST_COUNT"
+          echo "Modified existing post count: $MODIFIED_POST_COUNT"
+          echo "New post: $NEW_POST"
+
+          if [ "${{ steps.claude_article.outcome }}" = "failure" ]; then
+            echo "::warning::Claude exited non-zero. Checking whether it still produced one usable candidate post."
+
+            if [ "$NEW_POST_COUNT" -ne 1 ]; then
+              echo "::error::Claude failed and did not create exactly one new post."
+              exit 1
+            fi
+
+            if [ "$MODIFIED_POST_COUNT" -ne 0 ]; then
+              echo "::error::Claude failed and also modified existing posts."
+              exit 1
+            fi
+
+            if [ ! -f "$NEW_POST" ]; then
+              echo "::error::Candidate post file not found."
+              exit 1
+            fi
+
+            echo "Checking candidate post completeness after non-zero Claude exit..."
+
+            grep -q '^---' "$NEW_POST" || { echo "::error::Missing front matter delimiter."; exit 1; }
+            grep -q '^title:' "$NEW_POST" || { echo "::error::Missing title front matter."; exit 1; }
+            grep -q '^date:' "$NEW_POST" || { echo "::error::Missing date front matter."; exit 1; }
+            grep -q '^math: true' "$NEW_POST" || { echo "::error::Missing math: true."; exit 1; }
+            grep -q '^## Abstract' "$NEW_POST" || { echo "::error::Missing Abstract section."; exit 1; }
+            grep -q '^## References' "$NEW_POST" || { echo "::error::Missing References section."; exit 1; }
+
+            echo "::warning::Claude failed, but one candidate post exists and passed basic completeness checks. Continuing to audit/build gates."
+          fi
 
       - name: Verify exactly one new post was created
         run: |

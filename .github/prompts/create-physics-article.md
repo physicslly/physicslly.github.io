@@ -1,11 +1,23 @@
-Read and follow `CLAUDE.md`.
+Follow the relevant article rules in `CLAUDE.md`.
 
 Task:
 Create exactly 1 new PhD-level theoretical physics article.
 
+Turn-budget rules:
+
+- Finish the task within the available Claude Code turn budget.
+- Do not over-plan.
+- Do not repeatedly inspect the same files.
+- Do not perform broad repository exploration.
+- Do not read full existing posts.
+- Do not run full-site audits inside the article-generation prompt.
+- Do not run `bundle exec jekyll build`; the GitHub Actions workflow handles the build.
+- Do not run `python scripts/strict_math_audit.py --all`; use only `--changed-only` after writing.
+- Create exactly one article, run the minimal required verification, and stop.
+
 Scope:
 
-- Audit existing posts in `_posts/` before choosing a topic.
+- Inspect existing post metadata before choosing a topic.
 - Avoid duplicate topics.
 - Do not read full existing posts.
 - Inspect only filenames, front matter titles, tags, and headings.
@@ -16,28 +28,26 @@ Scope:
 
 Repository inspection before writing:
 
-Before creating the article, inspect only these files enough to understand the local rendering environment:
+Before choosing a topic, inspect only:
 
-- `CLAUDE.md`
-- `_config.yml`
-- `Gemfile`
-- `scripts/strict_math_audit.py`
+- `CLAUDE.md` headings or relevant short sections
+- `_config.yml` front matter / permalink / timezone settings
+- existing `_posts/*.md` filenames
+- existing post titles and tags using grep/head/sed
 
-Determine:
+Do not read full existing posts.
+Do not inspect unrelated files.
+Do not inspect `_site/`.
 
-- the Jekyll theme
-- active plugins
-- timezone
-- permalink/baseurl expectations
-- Chirpy front matter expectations
-- math-rendering constraints
-- audit rules that must pass
+Topic selection:
 
-Do not edit these files during article generation.
+Choose a topic quickly based on filenames, front matter titles, tags, and headings only.
+
+Avoid duplicate topics, but do not perform a full literature review of the repository.
 
 Article requirements:
 
-- Write around 1800-2500 words.
+- Write around 1600-2200 words.
 - Use valid Chirpy front matter.
 - Include `math: true`.
 - Use Asia/Singapore time with `+0800`.
@@ -71,35 +81,24 @@ Math requirements:
 
 Diagram requirements:
 
-- Include at most one Mermaid diagram when it genuinely clarifies the article.
-- Prefer a conceptual flowchart or dependency map.
-- Use `flowchart TD` or `graph TD`.
-- Put the diagram after the introduction or theoretical framework section.
-- If a Mermaid diagram is included, add `mermaid: true` to front matter.
-- If no Mermaid diagram is included, do not add `mermaid: true`.
-- Do not put LaTeX math inside Mermaid.
-- Do not use `$...$`, `$$...$$`, `\frac`, `\mathcal`, `\partial`, Greek-letter commands, or equation syntax inside Mermaid labels.
-- Mermaid node labels must be short plain English text.
-- Explain the diagram in prose after the block.
-- Do not include more than one Mermaid block.
+- Mermaid is optional.
+- Include a Mermaid diagram only if it clearly improves the article and can be written simply.
+- If including Mermaid, use exactly one small diagram with 4-7 nodes.
+- Prefer `flowchart TD`.
+- Use plain English labels only.
+- Do not put LaTeX or `$...$` inside Mermaid.
+- If a Mermaid block is included, add `mermaid: true` to front matter.
+- If no Mermaid block is included, do not add `mermaid: true`.
+- If adding a diagram would slow the task down, skip the diagram.
 
 After writing:
 
-- Stop after writing and verification.
-- Run `python scripts/strict_math_audit.py --changed-only`.
+- Run `python scripts/strict_math_audit.py --changed-only` once.
 - Run `git status --short _posts`.
 - Confirm exactly one new `_posts/*.md` file was created.
 - Confirm there are no modified existing posts.
 - Confirm the audit reports `TOTAL_STRICT_MATH_ISSUES=0`.
-- If a Mermaid diagram exists, confirm `mermaid: true` exists in front matter.
-- If no Mermaid diagram exists, confirm `mermaid: true` is absent.
-- Confirm there is at most one Mermaid block.
-- Confirm no LaTeX or math delimiters appear inside Mermaid blocks.
-- Do not report success if the audit fails.
-- Do not report success if the article contains fragile inline math patterns.
-- Fail and report clearly if no post file was created.
-- Fail and report clearly if more than one post file was created.
-- Fail and report clearly if raw LaTeX remains outside math mode.
+- Stop.
 
 Final response:
 Report the created file, title, word count, topic-deduplication basis, and math audit result.
