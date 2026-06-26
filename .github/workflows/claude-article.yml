@@ -190,15 +190,18 @@ jobs:
             exit 1
           fi
 
-          # Raw \[...\] / \(...\) delimiters are banned in source Markdown.
-          # They must be checked in "$NEW_POST".
-          # Do not reject generated HTML just because it contains \[ or \],
-          # because the theme/MathJax pipeline may emit those wrappers.
-          echo "Checking source Markdown for banned fragile math patterns..."
-          if grep -nE '\\gamma_\*|\|0\\rangle|\$\|.*\\rangle|\\\(|\\\)|\\\[|\\\]' "$NEW_POST"; then
-            echo "::error::Fragile or banned math pattern found in source Markdown."
+          # Do not grep for raw \[ or \] delimiters here.
+          # A raw regex cannot distinguish banned \[...\] delimiters from valid LaTeX
+          # linebreak spacing like \\[4pt] inside aligned display math.
+          # Banned delimiters are handled by scripts/strict_math_audit.py.
+          echo "Checking source Markdown for fragile math patterns..."
+          if grep -nE '\\gamma_\*|\|0\\rangle|\$\|.*\\rangle' "$NEW_POST"; then
+            echo "::error::Fragile math pattern found in source Markdown."
             exit 1
           fi
+
+          echo "Banned raw delimiters are enforced by scripts/strict_math_audit.py."
+          echo "Do not grep source Markdown for '\\[' or '\\]' here because valid LaTeX linebreak spacing such as '\\\\[4pt]' may appear inside aligned display math."
 
           echo "Checking generated HTML for fragile source patterns only..."
           if grep -RInE '\\gamma_\*|\|0\\rangle|\$\|.*\\rangle' "$HTML_DIR"; then
