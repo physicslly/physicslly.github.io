@@ -7,13 +7,17 @@ Audits Markdown posts in _posts/ for common math rendering issues:
   - Banned \(...\) and \[...\] delimiters (use $...$ and $$...$$ instead)
   - Display math placed inline inside prose ($$ on same line as text)
   - Unbalanced inline dollar signs
-  - Long inline math expressions (over 100 chars inside a single $...$)
+  - Long inline math expressions (over 80 chars inside a single $...$)
+  - Too many inline math segments in one long prose line
   - Dangling math subscripts/superscripts (_ or ^ without a following token)
+  - Fragile star subscript notation such as \gamma_*
+  - Fragile raw ket notation such as |0\rangle
   - \left / \right mismatch
   - Accidental indented math that becomes a Markdown code block
 
 Usage:
     python scripts/strict_math_audit.py              # audit all posts
+    python scripts/strict_math_audit.py --all        # audit all posts
     python scripts/strict_math_audit.py --changed-only  # audit only changed/new posts
 """
 
@@ -39,6 +43,12 @@ BANNED_DELIMITERS = re.compile(r"\\\(|\\\)|\\\[|\\\]")
 # A math script marker must be followed by a real script token, not whitespace,
 # punctuation, a closing delimiter, or end-of-segment.
 DANGLING_SCRIPT_PATTERN = re.compile(r"(?<!\\)([_^])(?=($|\s|[=,.;:\)\]\}]))")
+
+# Star subscripts can be parsed as Markdown emphasis before MathJax sees them.
+FRAGILE_STAR_SUBSCRIPT_PATTERN = re.compile(r"(\\gamma_\*|(?<!\\)_\*)")
+
+# Prefer explicit LaTeX delimiters for kets in Markdown math.
+FRAGILE_KET_PATTERN = re.compile(r"(?<!\\)\|0\\rangle")
 
 # For detecting accidental code blocks from indented math
 CODE_BLOCK_PATTERNS = [
@@ -175,21 +185,43 @@ def audit_file(path, report):
                     )
                     break
 
-        # --- Check 5: long inline math (>100 chars inside actual $...$ segments) ---
+        # --- Check 5: long inline math (>80 chars inside actual $...$ segments) ---
         if not in_display:
             parts = line.split("$")
+            inline_count = (len(parts) - 1) // 2
 
             # Odd indexes are actual inline math segments:
             # text $math$ text $math$ text
             # parts[0] text, parts[1] math, parts[2] text, parts[3] math
             for i in range(1, len(parts), 2):
                 segment = parts[i]
-                if len(segment) > 100:
+                if len(segment) > 80:
                     report.append(
                         f"LONG_INLINE_MATH {path}:{n}: ${segment[:240]}$"
                     )
 
-        # --- Check 6: dangling math subscript/superscript ---
+            if inline_count > 4 and len(line) > 120:
+                report.append(
+                    f"MANY_INLINE_MATH_SEGMENTS {path}:{n}: {line[:240]}"
+                )
+
+        # --- Check 6: fragile star subscript notation ---
+        for segment in math_segments(line, in_display):
+            if FRAGILE_STAR_SUBSCRIPT_PATTERN.search(segment):
+                report.append(
+                    f"FRAGILE_STAR_SUBSCRIPT {path}:{n}: {line[:240]}"
+                )
+                break
+
+        # --- Check 7: fragile raw ket notation ---
+        for segment in math_segments(line, in_display):
+            if FRAGILE_KET_PATTERN.search(segment):
+                report.append(
+                    f"FRAGILE_KET_NOTATION {path}:{n}: {line[:240]}"
+                )
+                break
+
+        # --- Check 8: dangling math subscript/superscript ---
         for segment in math_segments(line, in_display):
             if DANGLING_SCRIPT_PATTERN.search(segment):
                 report.append(
@@ -197,13 +229,13 @@ def audit_file(path, report):
                 )
                 break
 
-        # --- Check 7: \left / \right mismatch ---
+        # --- Check 9: \left / \right mismatch ---
         if line.count("\\left") != line.count("\\right"):
             report.append(
                 f"LEFT_RIGHT_MISMATCH {path}:{n}: {line[:240]}"
             )
 
-        # --- Check 8: accidental code block from indented math ---
+        # --- Check 10: accidental code block from indented math ---
         for pat in CODE_BLOCK_PATTERNS:
             if pat.search(line):
                 report.append(
@@ -220,6 +252,11 @@ def main():
         "--changed-only",
         action="store_true",
         help="Only audit files changed or new in working tree under _posts/.",
+    )
+    parser.add_argument(
+        "--all",
+        action="store_true",
+        help="Audit all posts under _posts/. This is the default.",
     )
     args = parser.parse_args()
 
