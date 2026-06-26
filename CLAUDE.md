@@ -124,6 +124,62 @@ i\gamma^\mu(\partial_\mu + A_\mu)\Gamma_{\mathrm{ch}}.
 $$
 ```
 
+## Chirpy-Safe Diagram Rules
+
+Articles may include one Mermaid diagram when it materially improves conceptual understanding.
+
+Use diagrams for:
+
+- theory dependency maps
+- symmetry breaking chains
+- renormalization group flows
+- quantization pipelines
+- anomaly descent sequences
+- BRST complexes
+- AdS/CFT dictionary maps
+- effective action workflows
+- conceptual relationships between frameworks
+
+Do not include a diagram merely as decoration.
+
+Hard rules:
+
+- Use at most one Mermaid diagram per article.
+- If a post contains a Mermaid code block, front matter must include `mermaid: true`.
+- If a post does not contain a Mermaid block, do not include `mermaid: true`.
+- Mermaid blocks must use triple backticks with `mermaid`.
+- Mermaid blocks must not contain LaTeX math.
+- Mermaid node labels must be plain text.
+- Do not use `$...$`, `$$...$$`, `\frac`, `\mu`, `\nu`, `\gamma`, `\mathcal`, or other LaTeX commands inside Mermaid.
+- Do not use raw angle brackets such as `<...>` in Mermaid labels.
+- Do not put Markdown links inside Mermaid labels.
+- Keep labels short.
+- Prefer `flowchart TD` or `graph TD`.
+- Avoid complex Mermaid features that may not render consistently in Chirpy.
+- Place the diagram after the introduction or after the first conceptual framework section.
+- Introduce the diagram with one normal prose sentence.
+- Explain the diagram in one short paragraph after it.
+
+Good Mermaid example:
+
+```mermaid
+flowchart TD
+    A[Classical action] --> B[Symmetry]
+    B --> C[Noether current]
+    C --> D[Ward identity]
+    D --> E[Quantum constraint]
+```
+
+Bad Mermaid example:
+
+```mermaid
+flowchart TD
+    A[$S = \int d^4x\, \mathcal{L}$] --> B[$\partial_\mu J^\mu = 0$]
+```
+
+Reason:
+LaTeX inside Mermaid labels is fragile in Jekyll/Chirpy and can conflict with MathJax. Put equations in normal display math outside the diagram.
+
 ## Protected Files
 
 Do not modify these unless explicitly requested:
@@ -223,6 +279,26 @@ math: true
 ---
 ```
 
+If an article includes a Mermaid diagram, add:
+
+```yaml
+mermaid: true
+```
+
+Example with both math and Mermaid:
+
+```yaml
+---
+title: "Article Title"
+date: YYYY-MM-DD 00:01:00 +0800
+categories: [Physics, Theory]
+tags: [physics, theoretical-physics, theory-of-everything]
+description: "A concise technical description of the article."
+math: true
+mermaid: true
+---
+```
+
 Rules:
 
 - Use Asia/Singapore time.
@@ -233,6 +309,8 @@ Rules:
 - Use lowercase kebab-case tags only.
 - Do not use spaces, uppercase letters, or old tech/Linux/cybersecurity tags in tags.
 - Always include `math: true` for posts containing equations or LaTeX.
+- Include `mermaid: true` only when the post contains a Mermaid code block.
+- Do not include `mermaid: true` when the post does not contain a Mermaid code block.
 
 ## Mandatory Math Rendering Hard Gate
 
@@ -382,6 +460,15 @@ When a local inline audit is needed, use checks that catch at least:
 - `LEFT_RIGHT_MISMATCH`
 - `POSSIBLE_CODE_BLOCK_MATH`
 - equations in `<pre>` or `<code>` after build
+
+When Mermaid diagrams are present, also check:
+
+- `MERMAID_WITHOUT_FRONT_MATTER`
+- `MERMAID_FRONT_MATTER_WITHOUT_BLOCK`
+- `TOO_MANY_MERMAID_BLOCKS`
+- `LATEX_INSIDE_MERMAID`
+- `MATH_DELIMITER_INSIDE_MERMAID`
+- `MERMAID_LABEL_TOO_LONG`
 
 Do not dismiss real raw LaTeX as a false positive. Only intentional literal syntax examples inside code fences may be treated as false positives.
 

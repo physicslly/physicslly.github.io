@@ -135,6 +135,12 @@ jobs:
           - Fix `FRAGILE_KET_NOTATION` by using `\lvert ... \rangle`.
           - Fix `LONG_INLINE_MATH`, `MANY_INLINE_MATH_SEGMENTS`, and `MULTI_COMMAND_INLINE_MATH` by converting inline expressions into display math.
           - Fix `DISPLAY_MATH_BLANK_LINE` by adding blank lines before and after display math.
+          - If the audit reports Mermaid issues:
+            - Fix `MERMAID_WITHOUT_FRONT_MATTER` by adding `mermaid: true` to front matter.
+            - Fix `MERMAID_FRONT_MATTER_WITHOUT_BLOCK` by removing `mermaid: true` if no Mermaid block exists.
+            - Fix `TOO_MANY_MERMAID_BLOCKS` by keeping only the most useful diagram.
+            - Fix `LATEX_INSIDE_MERMAID` and `MATH_DELIMITER_INSIDE_MERMAID` by removing equations from Mermaid labels and explaining equations in prose/display math outside the diagram.
+            - Fix `MERMAID_LABEL_TOO_LONG` by shortening node labels.
           - Fix all real issues from the audit report.
 
           Audit report:
@@ -188,6 +194,14 @@ jobs:
           if grep -RInE '<pre>|<code>' "$HTML_DIR" | grep -E '\\(frac|partial|gamma|Gamma|mathcal|mathrm|begin|end|langle|rangle|psi|phi|mu|nu|Delta)|\$'; then
             echo "::error::Possible math rendered inside code/pre block."
             exit 1
+          fi
+
+          echo "Checking Mermaid/front matter consistency in source Markdown..."
+          if grep -q '^```mermaid' "$NEW_POST"; then
+            if ! grep -q '^mermaid: true' "$NEW_POST"; then
+              echo "::error::Mermaid block found but front matter does not contain mermaid: true."
+              exit 1
+            fi
           fi
 
           # Do not grep for raw \[ or \] delimiters here.

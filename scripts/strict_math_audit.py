@@ -14,6 +14,9 @@ Audits Markdown posts in _posts/ for common math rendering issues:
   - Dangling math subscripts/superscripts (_ or ^ without a following token)
   - Fragile star subscript notation such as \gamma_*
   - Fragile raw ket notation such as |0\rangle
+  - Mermaid/front matter mismatch
+  - LaTeX or math delimiters inside Mermaid blocks
+  - Overlong Mermaid labels
   - \left / \right mismatch
   - Accidental indented math that becomes a Markdown code block
 
@@ -35,6 +38,7 @@ MAX_INLINE_MATH_CHARS = 80
 MAX_INLINE_MATH_SEGMENTS = 4
 MAX_INLINE_MATH_SEGMENT_LINE_CHARS = 120
 MAX_INLINE_LATEX_COMMANDS = 2
+MAX_MERMAID_LABEL_CHARS = 80
 
 # LaTeX commands that must appear inside math mode
 LATEX_CMD_PATTERN = re.compile(
@@ -61,6 +65,13 @@ FRAGILE_KET_PATTERN = re.compile(
 
 # Count LaTeX commands in inline math. Three or more usually belongs in display math.
 LATEX_COMMAND_IN_MATH_PATTERN = re.compile(r"\\[A-Za-z]+")
+
+# Mermaid labels should be plain text. Equations belong outside the diagram.
+LATEX_INSIDE_MERMAID_PATTERN = re.compile(
+    r"\\(frac|partial|mathcal|mathrm|gamma|Gamma|mu|nu|lambda|theta|phi|psi|"
+    r"langle|rangle|begin|end)\b"
+)
+MERMAID_LABEL_PATTERN = re.compile(r"\[([^\]]*)\]|\(([^)]*)\)|\{([^}]*)\}")
 
 # For detecting accidental code blocks from indented math
 CODE_BLOCK_PATTERNS = [
@@ -125,6 +136,31 @@ def strip_front_matter(text):
     return text
 
 
+def parse_front_matter(text):
+    """Parse simple scalar YAML front matter values used by this audit."""
+    if not text.startswith("---"):
+        return {}
+
+    parts = text.split("---", 2)
+    if len(parts) < 3:
+        return {}
+
+    front_matter = {}
+    for raw_line in parts[1].splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("#") or ":" not in line:
+            continue
+        key, value = line.split(":", 1)
+        front_matter[key.strip()] = value.strip().strip("\"'")
+
+    return front_matter
+
+
+def front_matter_bool(front_matter, key):
+    """Return True when front matter contains key: true."""
+    return front_matter.get(key, "").lower() == "true"
+
+
 def outside_inline_segments(line):
     """Yield segments of *line* that are outside $...$ inline math."""
     parts = line.split("$")
@@ -156,13 +192,37 @@ def has_blank_line(lines, index):
     return index < 0 or index >= len(lines) or lines[index].strip() == ""
 
 
+def audit_mermaid_line(path, n, line, report):
+    """Audit a single line inside a Mermaid code block."""
+    if "$" in line:
+        report.append(
+            f"MATH_DELIMITER_INSIDE_MERMAID {path}:{n}: {line[:240]}"
+        )
+
+    if LATEX_INSIDE_MERMAID_PATTERN.search(line):
+        report.append(
+            f"LATEX_INSIDE_MERMAID {path}:{n}: {line[:240]}"
+        )
+
+    for match in MERMAID_LABEL_PATTERN.finditer(line):
+        label = next(group for group in match.groups() if group is not None)
+        if len(label) > MAX_MERMAID_LABEL_CHARS:
+            report.append(
+                f"MERMAID_LABEL_TOO_LONG {path}:{n}: {label[:240]}"
+            )
+
+
 def audit_file(path, report):
     """Audit a single Markdown file. Append issues to *report*."""
-    text = path.read_text(encoding="utf-8")
-    text = strip_front_matter(text)
+    raw_text = path.read_text(encoding="utf-8")
+    front_matter = parse_front_matter(raw_text)
+    mermaid_enabled = front_matter_bool(front_matter, "mermaid")
+    text = strip_front_matter(raw_text)
 
     in_code = False
+    in_mermaid = False
     in_display = False
+    mermaid_count = 0
     lines = text.splitlines()
 
     for n, line in enumerate(lines, 1):
@@ -170,7 +230,19 @@ def audit_file(path, report):
 
         # Track fenced code blocks
         if stripped.startswith("```"):
+            if in_mermaid:
+                in_mermaid = False
+                continue
+
             in_code = not in_code
+            if in_code and stripped.lower().startswith("```mermaid"):
+                in_mermaid = True
+                in_code = False
+                mermaid_count += 1
+            continue
+
+        if in_mermaid:
+            audit_mermaid_line(path, n, line, report)
             continue
 
         if in_code:
@@ -288,6 +360,21 @@ def audit_file(path, report):
                     f"POSSIBLE_CODE_BLOCK_MATH {path}:{n}: {line[:240]}"
                 )
                 break
+
+    if mermaid_count > 1:
+        report.append(
+            f"TOO_MANY_MERMAID_BLOCKS {path}: found {mermaid_count} Mermaid blocks"
+        )
+
+    if mermaid_count > 0 and not mermaid_enabled:
+        report.append(
+            f"MERMAID_WITHOUT_FRONT_MATTER {path}: Mermaid block requires mermaid: true"
+        )
+
+    if mermaid_enabled and mermaid_count == 0:
+        report.append(
+            f"MERMAID_FRONT_MATTER_WITHOUT_BLOCK {path}: mermaid: true requires a Mermaid block"
+        )
 
 
 def main():

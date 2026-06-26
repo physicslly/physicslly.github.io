@@ -69,6 +69,20 @@ Math requirements:
 - Use `aligned` for long multi-line equations.
 - Do not report success if raw LaTeX remains outside math mode.
 
+Diagram requirements:
+
+- Include at most one Mermaid diagram when it genuinely clarifies the article.
+- Prefer a conceptual flowchart or dependency map.
+- Use `flowchart TD` or `graph TD`.
+- Put the diagram after the introduction or theoretical framework section.
+- If a Mermaid diagram is included, add `mermaid: true` to front matter.
+- If no Mermaid diagram is included, do not add `mermaid: true`.
+- Do not put LaTeX math inside Mermaid.
+- Do not use `$...$`, `$$...$$`, `\frac`, `\mathcal`, `\partial`, Greek-letter commands, or equation syntax inside Mermaid labels.
+- Mermaid node labels must be short plain English text.
+- Explain the diagram in prose after the block.
+- Do not include more than one Mermaid block.
+
 After writing:
 
 - Stop after writing and verification.
@@ -77,6 +91,10 @@ After writing:
 - Confirm exactly one new `_posts/*.md` file was created.
 - Confirm there are no modified existing posts.
 - Confirm the audit reports `TOTAL_STRICT_MATH_ISSUES=0`.
+- If a Mermaid diagram exists, confirm `mermaid: true` exists in front matter.
+- If no Mermaid diagram exists, confirm `mermaid: true` is absent.
+- Confirm there is at most one Mermaid block.
+- Confirm no LaTeX or math delimiters appear inside Mermaid blocks.
 - Do not report success if the audit fails.
 - Do not report success if the article contains fragile inline math patterns.
 - Fail and report clearly if no post file was created.
