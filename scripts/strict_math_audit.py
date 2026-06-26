@@ -9,6 +9,8 @@ Audits Markdown posts in _posts/ for common math rendering issues:
   - Unbalanced inline dollar signs
   - Long inline math expressions (over 80 chars inside a single $...$)
   - Too many inline math segments in one long prose line
+  - Inline math with too many LaTeX commands
+  - Display math without blank lines around $$ delimiters
   - Dangling math subscripts/superscripts (_ or ^ without a following token)
   - Fragile star subscript notation such as \gamma_*
   - Fragile raw ket notation such as |0\rangle
@@ -29,6 +31,11 @@ import sys
 from pathlib import Path
 
 
+MAX_INLINE_MATH_CHARS = 80
+MAX_INLINE_MATH_SEGMENTS = 4
+MAX_INLINE_MATH_SEGMENT_LINE_CHARS = 120
+MAX_INLINE_LATEX_COMMANDS = 2
+
 # LaTeX commands that must appear inside math mode
 LATEX_CMD_PATTERN = re.compile(
     r"\\(frac|sum|int|ell|mu|nu|alpha|beta|gamma|delta|theta|lambda|partial|"
@@ -48,7 +55,12 @@ DANGLING_SCRIPT_PATTERN = re.compile(r"(?<!\\)([_^])(?=($|\s|[=,.;:\)\]\}]))")
 FRAGILE_STAR_SUBSCRIPT_PATTERN = re.compile(r"(\\gamma_\*|(?<!\\)_\*)")
 
 # Prefer explicit LaTeX delimiters for kets in Markdown math.
-FRAGILE_KET_PATTERN = re.compile(r"(?<!\\)\|0\\rangle")
+FRAGILE_KET_PATTERN = re.compile(
+    r"(?<!\\)\|[^|$\n]*\\rangle|\\langle[^|$\n]*(?<!\\)\|"
+)
+
+# Count LaTeX commands in inline math. Three or more usually belongs in display math.
+LATEX_COMMAND_IN_MATH_PATTERN = re.compile(r"\\[A-Za-z]+")
 
 # For detecting accidental code blocks from indented math
 CODE_BLOCK_PATTERNS = [
@@ -132,6 +144,18 @@ def math_segments(line, in_display):
         yield parts[i]
 
 
+def inline_math_segments(line):
+    """Yield inline $...$ math segments from *line*."""
+    parts = line.split("$")
+    for i in range(1, len(parts), 2):
+        yield parts[i]
+
+
+def has_blank_line(lines, index):
+    """Return True when *index* is outside the file or points to a blank line."""
+    return index < 0 or index >= len(lines) or lines[index].strip() == ""
+
+
 def audit_file(path, report):
     """Audit a single Markdown file. Append issues to *report*."""
     text = path.read_text(encoding="utf-8")
@@ -154,6 +178,16 @@ def audit_file(path, report):
 
         # Track display math ($$ on its own line)
         if stripped == "$$":
+            if not in_display:
+                if not has_blank_line(lines, n - 2):
+                    report.append(
+                        f"DISPLAY_MATH_BLANK_LINE {path}:{n}: opening $$ must be preceded by a blank line"
+                    )
+            else:
+                if not has_blank_line(lines, n):
+                    report.append(
+                        f"DISPLAY_MATH_BLANK_LINE {path}:{n}: closing $$ must be followed by a blank line"
+                    )
             in_display = not in_display
             continue
 
@@ -193,19 +227,31 @@ def audit_file(path, report):
             # Odd indexes are actual inline math segments:
             # text $math$ text $math$ text
             # parts[0] text, parts[1] math, parts[2] text, parts[3] math
-            for i in range(1, len(parts), 2):
-                segment = parts[i]
-                if len(segment) > 80:
+            for segment in inline_math_segments(line):
+                if len(segment) > MAX_INLINE_MATH_CHARS:
                     report.append(
                         f"LONG_INLINE_MATH {path}:{n}: ${segment[:240]}$"
                     )
 
-            if inline_count > 4 and len(line) > 120:
+            if (
+                inline_count > MAX_INLINE_MATH_SEGMENTS
+                and len(line) > MAX_INLINE_MATH_SEGMENT_LINE_CHARS
+            ):
                 report.append(
                     f"MANY_INLINE_MATH_SEGMENTS {path}:{n}: {line[:240]}"
                 )
 
-        # --- Check 6: fragile star subscript notation ---
+        # --- Check 6: too many LaTeX commands in inline math ---
+        if not in_display:
+            for segment in inline_math_segments(line):
+                command_count = len(LATEX_COMMAND_IN_MATH_PATTERN.findall(segment))
+                if command_count >= MAX_INLINE_LATEX_COMMANDS + 1:
+                    report.append(
+                        f"MULTI_COMMAND_INLINE_MATH {path}:{n}: ${segment[:240]}$"
+                    )
+                    break
+
+        # --- Check 7: fragile star subscript notation ---
         for segment in math_segments(line, in_display):
             if FRAGILE_STAR_SUBSCRIPT_PATTERN.search(segment):
                 report.append(
@@ -213,7 +259,7 @@ def audit_file(path, report):
                 )
                 break
 
-        # --- Check 7: fragile raw ket notation ---
+        # --- Check 8: fragile raw ket notation ---
         for segment in math_segments(line, in_display):
             if FRAGILE_KET_PATTERN.search(segment):
                 report.append(
@@ -221,7 +267,7 @@ def audit_file(path, report):
                 )
                 break
 
-        # --- Check 8: dangling math subscript/superscript ---
+        # --- Check 9: dangling math subscript/superscript ---
         for segment in math_segments(line, in_display):
             if DANGLING_SCRIPT_PATTERN.search(segment):
                 report.append(
@@ -229,13 +275,13 @@ def audit_file(path, report):
                 )
                 break
 
-        # --- Check 9: \left / \right mismatch ---
+        # --- Check 10: \left / \right mismatch ---
         if line.count("\\left") != line.count("\\right"):
             report.append(
                 f"LEFT_RIGHT_MISMATCH {path}:{n}: {line[:240]}"
             )
 
-        # --- Check 10: accidental code block from indented math ---
+        # --- Check 11: accidental code block from indented math ---
         for pat in CODE_BLOCK_PATTERNS:
             if pat.search(line):
                 report.append(

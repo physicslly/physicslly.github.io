@@ -25,6 +25,105 @@ The blog identity is:
 
 "Theory of Everything" is a research direction, not a solved claim. Never write as if the blog has solved unification.
 
+## Repository Rendering Profile
+
+This repository uses:
+
+- Jekyll with the `jekyll-theme-chirpy` theme.
+- GitHub Pages user-site deployment.
+- Kramdown/GFM-style Markdown processing.
+- Chirpy post layout with `math: true` front matter.
+- Client-side MathJax-style rendering for equations.
+- Generated output in `_site/`.
+
+The source of truth for rendering behavior is:
+
+- `_config.yml`
+- `Gemfile`
+- `CLAUDE.md`
+- `scripts/strict_math_audit.py`
+- existing source Markdown posts in `_posts/`
+
+Before writing or editing math-heavy articles, inspect `_config.yml`, `Gemfile`, and this file enough to understand the theme, plugins, Markdown renderer, permalink style, and math rules.
+
+Never assume that LaTeX valid in isolation will render safely in this Chirpy template. Math must be written in Markdown-safe form.
+
+## Chirpy-Safe Math Writing Rules
+
+Use math syntax that is safe for Jekyll Chirpy, Kramdown, Markdown, and browser-side MathJax.
+
+Hard rules:
+
+- Use `$...$` only for very short inline expressions.
+- Use display math for transformations, derivations, long definitions, field expansions, correlators, and equations with more than one LaTeX command.
+- Never write equation-heavy prose with many inline math segments.
+- Never put `$$...$$` inside a prose line.
+- `$$` must appear alone on its own line.
+- Always put a blank line before and after display math.
+- Never indent equations with four spaces.
+- Never indent normal paragraphs with four spaces.
+- Never put equations inside triple backticks.
+- Never put equations inside Markdown tables.
+- Never use `\(...\)` or `\[...\]`.
+- Avoid raw vertical-bar ket notation such as `$|0\rangle$`; use `$\lvert 0 \rangle$` or display math.
+- Avoid fragile star-subscript notation such as `\gamma_*`; prefer `\Gamma_{\mathrm{ch}}`, `\gamma_5`, or another Markdown-safe notation.
+- Avoid `\text{...}` in subscripts when `\mathrm{...}` is enough.
+- Use `\lvert`, `\rvert`, `\langle`, and `\rangle` instead of raw `|` delimiters in nontrivial expressions.
+- Use display math for any expression longer than 80 characters.
+- Use display math if a line contains more than four inline math segments.
+- Use `aligned` inside display math for multi-line equations.
+- Use `\bar{\psi}` instead of `\bar\psi` for readability.
+- Use `\mathrm{BRST}`, `\mathrm{GUT}`, `\mathrm{em}`, etc. for textual subscripts.
+
+Bad:
+
+```md
+The vacuum $|0\rangle$ is not invariant, so $Q^a |0\rangle \neq 0$.
+```
+
+Good:
+
+```md
+The vacuum state is not invariant under the full symmetry group. For at least one generator,
+
+$$
+Q^a \lvert 0 \rangle
+\neq
+0.
+$$
+```
+
+Bad:
+
+```md
+Under a local axial rotation $\psi \to e^{i\alpha(x)\gamma_*}\psi$, $\bar\psi \to \bar\psi e^{i\alpha(x)\gamma_*}$, the Hermitian operator is $H = i\gamma^\mu(\partial_\mu + A_\mu)\gamma_*$.
+```
+
+Good:
+
+```md
+Under a local axial rotation,
+
+$$
+\begin{aligned}
+\psi
+&\to
+e^{i\alpha(x)\Gamma_{\mathrm{ch}}}\psi, \\
+\bar{\psi}
+&\to
+\bar{\psi}e^{i\alpha(x)\Gamma_{\mathrm{ch}}},
+\end{aligned}
+$$
+
+the relevant Hermitian operator is
+
+$$
+H
+=
+i\gamma^\mu(\partial_\mu + A_\mu)\Gamma_{\mathrm{ch}}.
+$$
+```
+
 ## Protected Files
 
 Do not modify these unless explicitly requested:
@@ -273,9 +372,16 @@ When a local inline audit is needed, use checks that catch at least:
 - `INLINE_DISPLAY_MATH`
 - `UNBALANCED_DOLLAR`
 - `BANNED_LATEX_DELIMITER`
+- `FRAGILE_STAR_SUBSCRIPT`
+- `FRAGILE_KET_NOTATION`
 - `LONG_INLINE_MATH`
+- `MANY_INLINE_MATH_SEGMENTS`
+- `MULTI_COMMAND_INLINE_MATH`
+- `DISPLAY_MATH_BLANK_LINE`
+- `DANGLING_SUBSCRIPT_OR_SUPERSCRIPT`
 - `LEFT_RIGHT_MISMATCH`
 - `POSSIBLE_CODE_BLOCK_MATH`
+- equations in `<pre>` or `<code>` after build
 
 Do not dismiss real raw LaTeX as a false positive. Only intentional literal syntax examples inside code fences may be treated as false positives.
 

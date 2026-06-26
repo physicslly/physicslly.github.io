@@ -131,6 +131,10 @@ jobs:
           - Do not place `$$...$$` inside paragraph lines.
           - `$$` must be alone on its own line.
           - Add blank lines before and after display equations.
+          - Fix `FRAGILE_STAR_SUBSCRIPT` by replacing fragile notation such as `\gamma_*` with a safer notation such as `\Gamma_{\mathrm{ch}}`.
+          - Fix `FRAGILE_KET_NOTATION` by using `\lvert ... \rangle`.
+          - Fix `LONG_INLINE_MATH`, `MANY_INLINE_MATH_SEGMENTS`, and `MULTI_COMMAND_INLINE_MATH` by converting inline expressions into display math.
+          - Fix `DISPLAY_MATH_BLANK_LINE` by adding blank lines before and after display math.
           - Fix all real issues from the audit report.
 
           Audit report:
@@ -159,6 +163,40 @@ jobs:
           find _site -maxdepth 4 -type f -name "index.html" | grep "/posts/" | wc -l
           grep -c "<loc>" _site/sitemap.xml
           grep -RIn "math: true" _posts | wc -l
+
+      - name: Browser-oriented rendered HTML sanity check
+        run: |
+          NEW_POST="$(git status --short _posts | awk '$1 == "??" && $2 ~ /^_posts\/.*\.md$/ {print $2; exit}')"
+
+          if [ -z "$NEW_POST" ]; then
+            echo "::error::Could not determine new post file."
+            exit 1
+          fi
+
+          SLUG="$(basename "$NEW_POST" .md | sed -E 's/^[0-9]{4}-[0-9]{2}-[0-9]{2}-//')"
+          HTML_DIR="_site/posts/$SLUG"
+
+          echo "New post: $NEW_POST"
+          echo "Expected rendered HTML directory: $HTML_DIR"
+
+          if [ ! -d "$HTML_DIR" ]; then
+            echo "::error::Rendered HTML directory not found for new post."
+            exit 1
+          fi
+
+          echo "Checking for LaTeX accidentally rendered as code blocks..."
+          if grep -RInE '<pre>|<code>' "$HTML_DIR" | grep -E '\\(frac|partial|gamma|Gamma|mathcal|mathrm|begin|end|langle|rangle|psi|phi|mu|nu|Delta)|\$'; then
+            echo "::error::Possible math rendered inside code/pre block."
+            exit 1
+          fi
+
+          echo "Checking for known fragile MathJax patterns in generated article source..."
+          if grep -RInE '\\gamma_\*|\|0\\rangle|\$\|.*\\rangle|\\\(|\\\]' "$HTML_DIR"; then
+            echo "::error::Fragile math pattern found in generated HTML source."
+            exit 1
+          fi
+
+          echo "Rendered HTML sanity check passed."
 
       - name: Show changed files
         run: |
