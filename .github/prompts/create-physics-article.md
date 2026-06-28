@@ -45,6 +45,34 @@ Choose a topic quickly based on filenames, front matter titles, tags, and headin
 
 Avoid duplicate topics, but do not perform a full literature review of the repository.
 
+## Voice and originality requirements
+
+Write in clear, natural American academic English.
+
+The article should feel human-authored and research-style, not generic or template-like.
+
+Use a slightly personal academic voice when helpful:
+
+- "A useful way to see the point is the following."
+- "The subtlety is not the equation itself, but what it assumes."
+- "This is where the formal language becomes dangerous if taken too literally."
+- "The payoff is that..."
+
+Avoid:
+
+- "This article explores..."
+- "In conclusion..."
+- "It plays a crucial role..."
+- broad encyclopedia-style introductions
+- repeated generic sentences
+- hype
+- clickbait
+- slang-heavy prose
+- race-coded dialect
+- fake personal claims
+
+The goal is not to evade detection systems. The goal is to produce genuinely useful, original, technically careful writing.
+
 PhD-level topic selection:
 
 - Choose a narrow technical topic, not a broad textbook overview.
@@ -63,13 +91,18 @@ Article requirements:
 - Use lowercase kebab-case tags only.
 - Do not use spaces or uppercase letters in tags.
 - Use research-paper style suitable for PhD-level theoretical physics readers.
+- Choose a narrow technical topic, not a broad textbook overview.
 - Frame the article around one central technical question.
+- State one central technical question near the introduction.
 - Include assumptions and notation.
+- Define important objects before using them heavily.
 - Include precise definitions before heavy use of symbols.
-- Include one main derivation with intermediate steps.
-- Interpret the main equation term by term.
+- Include one main derivation or proof sketch.
+- Interpret important equations term by term.
+- Interpret important equations in prose.
 - Include consistency checks or limiting cases.
 - Include limitations or open problems.
+- Include 2-4 contextual internal links to existing posts.
 - Include canonical references and use in-text citation markers like `[1]`, `[2]`.
 - Avoid broad textbook-style summaries.
 - Treat Theory of Everything as an open research direction, not a solved claim.
@@ -92,6 +125,24 @@ Abstract paragraph.
 
 ## 1. Introduction
 ```
+
+## Internal linking requirements
+
+Before writing, inspect existing post filenames in `_posts/`.
+
+Add 2-4 contextual internal links to existing posts.
+
+Rules:
+
+- Only link to posts that actually exist.
+- Do not invent slugs.
+- Do not create broken links.
+- Do not add irrelevant links.
+- Do not stuff links.
+- Use links naturally inside explanatory paragraphs.
+- Prefer links to prerequisite, adjacent, or follow-up topics.
+
+The article should still read naturally if the links are removed.
 
 Math requirements:
 
@@ -161,6 +212,21 @@ After writing:
 - Confirm `## Abstract` is followed by an abstract paragraph before the `**Keywords:**` line.
 - Confirm there is exactly one `**Keywords:**` line.
 - Confirm there is no `## Keywords` heading.
+
+Quality checklist:
+
+- The article is not a generic textbook overview.
+- The article has a central technical question.
+- The article includes assumptions or scope.
+- The article defines its main objects.
+- The article contains a real derivation or proof sketch.
+- The article explains important equations in prose.
+- The article includes consistency checks, limiting cases, or limitations.
+- The article includes 2-4 contextual internal links to existing posts.
+- The article includes canonical references and in-text citation markers.
+- The prose does not start with "This article explores".
+- The prose does not rely on generic filler sentences.
+
 - Stop.
 
 Final response:

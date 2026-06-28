@@ -216,6 +216,44 @@ Use an academic tone:
 
 Do not write shallow popular-science summaries. Do not claim that open research problems are solved.
 
+## Human Academic Voice
+
+Write in clear, natural American academic English.
+
+The voice should feel like a careful theoretical physicist explaining a technical point to advanced readers, not like a generic encyclopedia page.
+
+The prose should be:
+
+- precise
+- readable
+- rigorous
+- slightly personal in framing
+- careful about assumptions
+- skeptical of overclaiming
+- comfortable explaining why a technical distinction matters
+
+Allowed phrases and tones:
+
+- "A useful way to see the point is the following."
+- "The subtlety is not the equation itself, but what it assumes."
+- "This is where the formal language becomes dangerous if taken too literally."
+- "The payoff is that the same structure controls both perturbation theory and the effective description."
+- "This should not be read as a proof of unification; it is a structural analogy."
+
+Avoid robotic or generic phrasing:
+
+- "This article explores..."
+- "In conclusion, X is very important..."
+- "It plays a crucial role in modern physics..."
+- "Since the dawn of physics..."
+- "This fascinating topic..."
+- repeated generic overview sentences
+
+Do not use slang-heavy prose.
+Do not use clickbait.
+Do not imitate any racial, ethnic, or stereotyped dialect.
+Do not invent a personal biography or fake first-person research experience.
+
 ## PhD-Level Research Apparatus
 
 A physicslly article should read like a rigorous theoretical physics mini review or advanced lecture note, not a generic overview.
@@ -278,6 +316,39 @@ Every article should include most of the following research apparatus:
 
 Do not overclaim. If a construction is formal, regulator-dependent, perturbative, truncation-dependent, or only valid under specific assumptions, say so explicitly.
 
+## Originality and Reader Value
+
+Each article must provide visible reader value beyond a generic textbook summary.
+
+A generated article should include:
+
+- a narrow technical thesis
+- a central research-style question
+- a clear statement of assumptions
+- precise definitions before heavy notation
+- at least one real derivation or proof sketch
+- interpretation of the main equation
+- consistency checks or limiting cases
+- limitations or open problems
+- 2-4 contextual internal links to existing posts
+- canonical references with in-text citation markers
+
+Avoid broad overview articles unless they are framed around a specific technical obstruction, theorem, identity, or derivation.
+
+Bad topic framing:
+
+- "Introduction to Quantum Field Theory"
+- "What Is General Relativity?"
+- "Overview of String Theory"
+- "The Basics of Gauge Symmetry"
+
+Better topic framing:
+
+- "How Ward Identities Constrain Quantum Correlation Functions"
+- "Why Gauge Redundancy Requires BRST Cohomology"
+- "How Wilsonian RG Separates Relevant and Irrelevant Operators"
+- "Why Reflection Positivity Matters for Euclidean Quantum Field Theory"
+
 ## Article Structure
 
 New physics articles should normally use this structure:
@@ -285,15 +356,15 @@ New physics articles should normally use this structure:
 ```md
 ## Abstract
 
-Write one concise but substantive abstract paragraph first. The abstract must summarize the problem, framework, main derivation or result, and relevance.
+Abstract paragraph first.
 
 **Keywords:** keyword one, keyword two, keyword three
 
-## 1. Introduction and Problem Statement
+## 1. Introduction and Central Question
 
 ## 2. Assumptions and Notation
 
-## 3. Conceptual Framework
+## 3. Definitions and Setup
 
 ## 4. Main Derivation
 
@@ -301,7 +372,7 @@ Write one concise but substantive abstract paragraph first. The abstract must su
 
 ## 6. Consistency Checks and Limiting Cases
 
-## 7. Comparison with Related Formulations
+## 7. Relation to Existing Frameworks
 
 ## 8. Limitations and Open Problems
 
@@ -314,7 +385,7 @@ Write one concise but substantive abstract paragraph first. The abstract must su
 ## References
 ```
 
-The section titles may be adapted to the topic, but the article must preserve the research-paper logic: problem statement, assumptions, definitions, derivation, interpretation, checks, limitations, and references.
+The exact section titles may be adapted to the topic, but the article must preserve the research-paper logic: central question, assumptions, definitions, derivation, interpretation, checks, limitations, and references.
 
 Abstract and keywords rules:
 
@@ -340,6 +411,28 @@ Each article must include:
 - relation to the Theory of Everything without claiming the problem is solved
 - common pitfalls
 - canonical references with in-text citation markers
+
+## Internal Linking Requirements
+
+Every new article must include 2-4 contextual internal links to existing posts.
+
+Rules:
+
+- Link only to posts that exist in `_posts/`.
+- Use normal Markdown links.
+- Links must be relevant to the surrounding paragraph.
+- Do not stuff links.
+- Do not link every keyword.
+- Do not create broken links.
+- Prefer links to prerequisite, adjacent, or follow-up topics.
+
+Good example:
+
+This connects naturally to [BRST symmetry](/posts/brst-symmetry-gauge-theories/) when gauge redundancies survive gauge fixing.
+
+Bad example:
+
+Quantum field theory is related to [cosmology](/posts/cosmology-inflation-early-universe/), [black holes](/posts/black-hole-thermodynamics-information-paradox/), [string theory](/posts/string-theory-worldsheet-conformal-gauge/), and [gauge theory](/posts/gauge-symmetry-structure-fundamental-interactions/).
 
 ## Front Matter
 
