@@ -338,6 +338,10 @@ jobs:
 
           echo "Rendered HTML sanity check passed."
 
+      - name: Generate llms.txt
+        run: |
+          python scripts/generate_llms_txt.py
+
       - name: Show changed files
         run: |
           git status --short
@@ -383,7 +387,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          git add _posts
+          git add _posts llms.txt
           git commit -m "Add AI-generated physics article"
           git push origin "$BRANCH"
 
