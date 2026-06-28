@@ -59,6 +59,24 @@ Article requirements:
 - Treat Theory of Everything as an open research direction, not a solved claim.
 - Do not invent fake references, DOI values, arXiv IDs, authors, or journal metadata.
 
+Abstract and keywords requirements:
+
+- The `## Abstract` section must start with a normal abstract paragraph.
+- Do not put `**Keywords:**` immediately after `## Abstract`.
+- Put exactly one `**Keywords:**` line after the abstract paragraph.
+- Do not use a separate `## Keywords` heading.
+- The order must be:
+
+```md
+## Abstract
+
+Abstract paragraph.
+
+**Keywords:** keyword one, keyword two, keyword three
+
+## 1. Introduction
+```
+
 Math requirements:
 
 - Follow the math rules in `CLAUDE.md`.
@@ -98,6 +116,9 @@ After writing:
 - Confirm exactly one new `_posts/*.md` file was created.
 - Confirm there are no modified existing posts.
 - Confirm the audit reports `TOTAL_STRICT_MATH_ISSUES=0`.
+- Confirm `## Abstract` is followed by an abstract paragraph before the `**Keywords:**` line.
+- Confirm there is exactly one `**Keywords:**` line.
+- Confirm there is no `## Keywords` heading.
 - Stop.
 
 Final response:

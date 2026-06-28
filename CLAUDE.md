@@ -223,6 +223,8 @@ New physics articles should normally use this structure:
 ```md
 ## Abstract
 
+Write one concise but substantive abstract paragraph first. The abstract must summarize the problem, framework, main derivation or result, and relevance.
+
 **Keywords:** keyword one, keyword two, keyword three
 
 ## 1. Introduction
@@ -248,7 +250,16 @@ New physics articles should normally use this structure:
 ## References
 ```
 
-Use inline `**Keywords:** ...` rather than a standalone `## Keywords` heading unless an existing post's local style clearly requires otherwise.
+Abstract and keywords rules:
+
+- The `## Abstract` section must begin with a normal prose paragraph.
+- Do not place `**Keywords:**` immediately after `## Abstract`.
+- Place `**Keywords:**` after the abstract paragraph.
+- Use exactly one `**Keywords:**` line.
+- Do not create a separate `## Keywords` heading.
+- The keywords line must appear before `## 1. Introduction`.
+
+Use inline `**Keywords:** ...` after the abstract paragraph, not immediately under the `## Abstract` heading.
 
 Each article must include:
 

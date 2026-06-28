@@ -187,6 +187,12 @@ jobs:
             - Fix `TOO_MANY_MERMAID_BLOCKS` by keeping only the most useful diagram.
             - Fix `LATEX_INSIDE_MERMAID` and `MATH_DELIMITER_INSIDE_MERMAID` by removing equations from Mermaid labels and explaining equations in prose/display math outside the diagram.
             - Fix `MERMAID_LABEL_TOO_LONG` by shortening node labels.
+          - If the audit reports abstract/keywords structure issues:
+            - Fix `KEYWORDS_BEFORE_ABSTRACT_PARAGRAPH` by moving `**Keywords:**` below the abstract paragraph.
+            - Fix `MISSING_KEYWORDS_LINE` by adding exactly one `**Keywords:**` line after the abstract paragraph.
+            - Fix `MULTIPLE_KEYWORDS_LINES` by keeping only one keywords line.
+            - Fix `KEYWORDS_HEADING_NOT_ALLOWED` by removing the `## Keywords` heading and using inline `**Keywords:**`.
+            - Fix `KEYWORDS_AFTER_INTRODUCTION` by moving the keywords line into the Abstract section before `## 1. Introduction`.
           - Fix all real issues from the audit report.
 
           Audit report:
@@ -230,6 +236,67 @@ jobs:
 
           echo "New post: $NEW_POST"
           echo "Expected rendered HTML directory: $HTML_DIR"
+
+          echo "Checking Abstract/Keywords source structure..."
+          python - "$NEW_POST" <<'PY'
+          from pathlib import Path
+          import sys
+
+          path = Path(sys.argv[1])
+          text = path.read_text(encoding="utf-8")
+          if text.startswith("---"):
+              parts = text.split("---", 2)
+              body = parts[2] if len(parts) >= 3 else text
+          else:
+              body = text
+
+          lines = body.splitlines()
+          keywords = [i for i, line in enumerate(lines) if line.strip().startswith("**Keywords:**")]
+          if len(keywords) != 1:
+              print(f"::error::Expected exactly one **Keywords:** line, found {len(keywords)}.")
+              sys.exit(1)
+
+          if any(line.strip() == "## Keywords" for line in lines):
+              print("::error::Do not use a separate ## Keywords heading.")
+              sys.exit(1)
+
+          try:
+              abstract_i = next(i for i, line in enumerate(lines) if line.strip() == "## Abstract")
+          except StopIteration:
+              print("::error::Missing ## Abstract heading.")
+              sys.exit(1)
+
+          try:
+              intro_i = next(i for i, line in enumerate(lines) if line.strip().startswith("## 1. Introduction"))
+          except StopIteration:
+              print("::error::Missing ## 1. Introduction heading.")
+              sys.exit(1)
+
+          kw_i = keywords[0]
+          if not (abstract_i < kw_i < intro_i):
+              print("::error::Keywords must be inside Abstract section before Introduction.")
+              sys.exit(1)
+
+          prose_found = False
+          for line in lines[abstract_i + 1:kw_i]:
+              stripped = line.strip()
+              if not stripped:
+                  continue
+              if stripped.startswith("#"):
+                  continue
+              if stripped in {"$$", "```", "```mermaid"}:
+                  continue
+              if stripped.startswith(("-", "*", ">", "```")):
+                  continue
+              prose_found = True
+              break
+
+          if not prose_found:
+              print("::error::Keywords appears before the abstract paragraph.")
+              sys.exit(1)
+
+          print("Abstract/Keywords structure check passed.")
+          PY
 
           if [ ! -d "$HTML_DIR" ]; then
             echo "::error::Rendered HTML directory not found for new post."

@@ -17,6 +17,7 @@ Audits Markdown posts in _posts/ for common math rendering issues:
   - Mermaid/front matter mismatch
   - LaTeX or math delimiters inside Mermaid blocks
   - Overlong Mermaid labels
+  - Abstract/keywords structure mistakes
   - \left / \right mismatch
   - Accidental indented math that becomes a Markdown code block
 
@@ -72,6 +73,7 @@ LATEX_INSIDE_MERMAID_PATTERN = re.compile(
     r"langle|rangle|begin|end)\b"
 )
 MERMAID_LABEL_PATTERN = re.compile(r"\[([^\]]*)\]|\(([^)]*)\)|\{([^}]*)\}")
+KEYWORDS_LINE_PREFIX = "**Keywords:**"
 
 # For detecting accidental code blocks from indented math
 CODE_BLOCK_PATTERNS = [
@@ -212,6 +214,95 @@ def audit_mermaid_line(path, n, line, report):
             )
 
 
+def is_abstract_prose_line(stripped):
+    """Return True for a normal prose line inside the Abstract section."""
+    if not stripped:
+        return False
+    if stripped.startswith("#"):
+        return False
+    if stripped in {"$$", "```", "```mermaid"}:
+        return False
+    if stripped.startswith(("```", "-", "*", ">", "+")):
+        return False
+    if re.match(r"^\d+\.", stripped):
+        return False
+    return True
+
+
+def audit_article_structure(path, lines, report):
+    """Audit Abstract/Keywords structure in a Markdown post body."""
+    abstract_indexes = [
+        i for i, line in enumerate(lines)
+        if line.strip() == "## Abstract"
+    ]
+    intro_indexes = [
+        i for i, line in enumerate(lines)
+        if line.strip().startswith("## 1. Introduction")
+    ]
+    keyword_indexes = [
+        i for i, line in enumerate(lines)
+        if line.strip().startswith(KEYWORDS_LINE_PREFIX)
+    ]
+    keyword_heading_indexes = [
+        i for i, line in enumerate(lines)
+        if line.strip() == "## Keywords"
+    ]
+
+    if not keyword_indexes:
+        report.append(f"MISSING_KEYWORDS_LINE {path}: expected one **Keywords:** line")
+
+    if len(keyword_indexes) > 1:
+        lines_text = ", ".join(str(i + 1) for i in keyword_indexes)
+        report.append(
+            f"MULTIPLE_KEYWORDS_LINES {path}: found at lines {lines_text}"
+        )
+
+    for i in keyword_heading_indexes:
+        report.append(
+            f"KEYWORDS_HEADING_NOT_ALLOWED {path}:{i + 1}: ## Keywords"
+        )
+
+    if intro_indexes:
+        intro_i = intro_indexes[0]
+        for kw_i in keyword_indexes:
+            if kw_i > intro_i:
+                report.append(
+                    f"KEYWORDS_AFTER_INTRODUCTION {path}:{kw_i + 1}: "
+                    "**Keywords:** must appear before ## 1. Introduction"
+                )
+
+    if not abstract_indexes or not keyword_indexes:
+        return
+
+    abstract_i = abstract_indexes[0]
+    intro_i = intro_indexes[0] if intro_indexes else len(lines)
+    abstract_keyword_indexes = [
+        i for i in keyword_indexes
+        if abstract_i < i < intro_i
+    ]
+
+    if not abstract_keyword_indexes:
+        return
+
+    first_keyword_i = abstract_keyword_indexes[0]
+    first_non_empty_i = None
+    for i in range(abstract_i + 1, first_keyword_i + 1):
+        if lines[i].strip():
+            first_non_empty_i = i
+            break
+
+    prose_found = any(
+        is_abstract_prose_line(lines[i].strip())
+        for i in range(abstract_i + 1, first_keyword_i)
+    )
+
+    if first_non_empty_i == first_keyword_i or not prose_found:
+        report.append(
+            f"KEYWORDS_BEFORE_ABSTRACT_PARAGRAPH {path}:{first_keyword_i + 1}: "
+            "**Keywords:** must follow a normal abstract paragraph"
+        )
+
+
 def audit_file(path, report):
     """Audit a single Markdown file. Append issues to *report*."""
     raw_text = path.read_text(encoding="utf-8")
@@ -224,6 +315,8 @@ def audit_file(path, report):
     in_display = False
     mermaid_count = 0
     lines = text.splitlines()
+
+    audit_article_structure(path, lines, report)
 
     for n, line in enumerate(lines, 1):
         stripped = line.strip()
