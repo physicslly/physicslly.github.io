@@ -45,6 +45,13 @@ Choose a topic quickly based on filenames, front matter titles, tags, and headin
 
 Avoid duplicate topics, but do not perform a full literature review of the repository.
 
+PhD-level topic selection:
+
+- Choose a narrow technical topic, not a broad textbook overview.
+- Avoid generic introductory topics unless framed around a specific theorem, derivation, obstruction, or technical problem.
+- The article must have a central technical question.
+- Prefer topics that support a real derivation, consistency checks, and limitations.
+
 Article requirements:
 
 - Write around 1600-2200 words.
@@ -56,6 +63,15 @@ Article requirements:
 - Use lowercase kebab-case tags only.
 - Do not use spaces or uppercase letters in tags.
 - Use research-paper style suitable for PhD-level theoretical physics readers.
+- Frame the article around one central technical question.
+- Include assumptions and notation.
+- Include precise definitions before heavy use of symbols.
+- Include one main derivation with intermediate steps.
+- Interpret the main equation term by term.
+- Include consistency checks or limiting cases.
+- Include limitations or open problems.
+- Include canonical references and use in-text citation markers like `[1]`, `[2]`.
+- Avoid broad textbook-style summaries.
 - Treat Theory of Everything as an open research direction, not a solved claim.
 - Do not invent fake references, DOI values, arXiv IDs, authors, or journal metadata.
 
@@ -97,6 +113,26 @@ Math requirements:
 - Use `aligned` for long multi-line equations.
 - Do not report success if raw LaTeX remains outside math mode.
 
+Research-depth requirements:
+
+The article must include at least six of the following elements:
+
+- central technical question
+- assumptions and scope
+- notation and conventions
+- precise definitions
+- proposition, theorem, lemma, or proof sketch
+- main derivation
+- term-by-term equation interpretation
+- consistency checks
+- limiting cases
+- worked technical example
+- comparison with related formulations
+- limitations or open problems
+- in-text citation markers tied to canonical references
+
+Do not force a Mermaid diagram. Diagrams are optional.
+
 Diagram requirements:
 
 - Mermaid is optional.
@@ -113,6 +149,12 @@ After writing:
 
 - Run `python scripts/strict_math_audit.py --changed-only` once.
 - Run `git status --short _posts`.
+- Confirm the article is not a generic textbook overview.
+- Confirm the article states a central technical question.
+- Confirm the article includes assumptions or notation.
+- Confirm the article includes a real derivation.
+- Confirm the article includes consistency checks, limiting cases, or limitations.
+- Confirm references are canonical and include in-text citation markers.
 - Confirm exactly one new `_posts/*.md` file was created.
 - Confirm there are no modified existing posts.
 - Confirm the audit reports `TOTAL_STRICT_MATH_ISSUES=0`.

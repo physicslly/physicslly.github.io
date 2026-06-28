@@ -216,6 +216,68 @@ Use an academic tone:
 
 Do not write shallow popular-science summaries. Do not claim that open research problems are solved.
 
+## PhD-Level Research Apparatus
+
+A physicslly article should read like a rigorous theoretical physics mini review or advanced lecture note, not a generic overview.
+
+Each new article should be centered on a narrow technical question.
+
+Prefer topics like:
+
+- BRST cohomology and anomaly classification
+- Osterwalder-Schrader reconstruction and reflection positivity
+- Wilsonian effective action near a fixed point
+- heat-kernel methods for one-loop effective actions
+- semiclassical instanton expansion
+- constraint quantization and reduced phase space
+- conformal bootstrap constraints on operator data
+- asymptotic safety truncations and fixed-point stability
+
+Avoid overly broad titles such as:
+
+- "Introduction to Quantum Field Theory"
+- "The Path Integral Formulation"
+- "What Is General Relativity?"
+- "Overview of String Theory"
+
+Every article should include most of the following research apparatus:
+
+1. Central technical question  
+   State the precise question the article addresses.
+
+2. Assumptions and scope  
+   State the signature, dimension, field content, regularity assumptions, boundary assumptions, gauge group assumptions, or regulator assumptions when relevant.
+
+3. Notation and conventions  
+   Define symbols before using them heavily. Clarify metric signature, index conventions, operators, fields, measures, and source terms.
+
+4. Definitions  
+   Give precise definitions for the main objects.
+
+5. Main derivation  
+   Include a real derivation, not only a statement of final formulas. The derivation should follow a clear chain:
+   setup → variation or construction → identity → main equation → interpretation.
+
+6. Term-by-term interpretation  
+   After important equations, explain the role of each term.
+
+7. Consistency checks  
+   Include checks such as classical limit, free-field limit, weak-coupling limit, gauge invariance, dimensional analysis, unitarity, regulator independence, or recovery of a known special case.
+
+8. Limiting cases or examples  
+   Work out at least one technical example or limiting case.
+
+9. Comparison with related formulations  
+   Compare with an adjacent framework when useful, such as canonical quantization vs path integral, Wilsonian RG vs Callan-Symanzik RG, Lorentzian vs Euclidean QFT, BRST vs BV, or continuum vs lattice regularization.
+
+10. Limitations and open problems  
+   State what the framework does not solve, where the derivation is formal, or what remains an active research problem.
+
+11. Canonical references  
+   Use standard textbooks, foundational papers, or review papers. Include in-text citation markers such as `[1]`, `[2]` where appropriate.
+
+Do not overclaim. If a construction is formal, regulator-dependent, perturbative, truncation-dependent, or only valid under specific assumptions, say so explicitly.
+
 ## Article Structure
 
 New physics articles should normally use this structure:
@@ -227,28 +289,32 @@ Write one concise but substantive abstract paragraph first. The abstract must su
 
 **Keywords:** keyword one, keyword two, keyword three
 
-## 1. Introduction
+## 1. Introduction and Problem Statement
 
-## 2. Preliminaries and Notation
+## 2. Assumptions and Notation
 
-## 3. Theoretical Framework
+## 3. Conceptual Framework
 
 ## 4. Main Derivation
 
-## 5. Interpretation of the Main Equations
+## 5. Interpretation of the Main Equation
 
 ## 6. Consistency Checks and Limiting Cases
 
-## 7. Discussion
+## 7. Comparison with Related Formulations
 
-## 8. Relation to the Theory of Everything
+## 8. Limitations and Open Problems
 
-## 9. Common Pitfalls
+## 9. Relation to the Theory of Everything
 
-## 10. Conclusion
+## 10. Common Pitfalls
+
+## 11. Conclusion
 
 ## References
 ```
+
+The section titles may be adapted to the topic, but the article must preserve the research-paper logic: problem statement, assumptions, definitions, derivation, interpretation, checks, limitations, and references.
 
 Abstract and keywords rules:
 
@@ -263,17 +329,17 @@ Use inline `**Keywords:** ...` after the abstract paragraph, not immediately und
 
 Each article must include:
 
-- precise definitions
+- central technical question
 - assumptions and notation
-- mathematical setup
-- at least one serious derivation
-- key equations
+- precise definitions
+- main derivation
 - term-by-term interpretation of important equations
 - consistency checks or limiting cases
-- advanced conceptual discussion
-- relation to the Theory of Everything
+- comparison with related formulations when useful
+- limitations or open problems
+- relation to the Theory of Everything without claiming the problem is solved
 - common pitfalls
-- references
+- canonical references with in-text citation markers
 
 ## Front Matter
 
