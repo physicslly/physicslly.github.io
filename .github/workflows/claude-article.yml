@@ -152,7 +152,7 @@ jobs:
 
       - name: Claude fix math rendering issues
         if: steps.math_audit.outcome == 'failure'
-        timeout-minutes: 25
+        timeout-minutes: 60
         run: |
           cat > /tmp/claude-fix-math-prompt.md << 'PROMPT'
           Read and follow CLAUDE.md.
@@ -201,7 +201,7 @@ jobs:
           claude -p "$(cat /tmp/claude-fix-math-prompt.md)" \
             --permission-mode bypassPermissions \
             --allowedTools "Read,Edit,MultiEdit,Write,Bash" \
-            --max-turns 25
+            --max-turns 90
 
       - name: Final strict math audit
         run: |
