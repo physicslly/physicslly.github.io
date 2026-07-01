@@ -17,7 +17,7 @@ jobs:
 
     env:
       # OpenRouter Claude Code integration
-      ANTHROPIC_BASE_URL: https://openrouter.ai/api
+      ANTHROPIC_BASE_URL: https://api.openmodel.ai
       ANTHROPIC_AUTH_TOKEN: ${{ secrets.OPENROUTER_API_KEY }}
       ANTHROPIC_API_KEY: ""
 
@@ -52,7 +52,7 @@ jobs:
       - name: Select OpenRouter model
         run: |
           MODELS=(
-            "openrouter/owl-alpha"
+            "deepseek-v4-flash"
           )
 
           RUN_NUMBER="${GITHUB_RUN_NUMBER:-1}"
@@ -67,9 +67,10 @@ jobs:
       - name: Run Claude article prompt
         id: claude_article
         continue-on-error: true
-        timeout-minutes: 60
+        timeout-minutes: 120
         run: |
           claude -p "$(cat .github/prompts/create-physics-article.md)" \
+            --model "$ANTHROPIC_MODEL" \
             --permission-mode bypassPermissions \
             --allowedTools "Read,Edit,MultiEdit,Write,Bash" \
             --max-turns 120
@@ -152,7 +153,7 @@ jobs:
 
       - name: Claude fix math rendering issues
         if: steps.math_audit.outcome == 'failure'
-        timeout-minutes: 60
+        timeout-minutes: 120
         run: |
           cat > /tmp/claude-fix-math-prompt.md << 'PROMPT'
           Read and follow CLAUDE.md.
