@@ -14,4 +14,4 @@ Articles may include equations, derivations, interpretations, and references. Wh
 
 References and external links are provided for educational context. Their inclusion does not imply endorsement, completeness, or final authority.
 
-Tilanou is not responsible for any misunderstanding, misuse, or reliance on the information published on this website.
+Physicslly is not responsible for any misunderstanding, misuse, or reliance on the information published on this website.
