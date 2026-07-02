@@ -4,7 +4,7 @@ icon: fas fa-info-circle
 order: 4
 ---
 
-Tilanou is a theoretical physics notes blog focused on the mathematical and conceptual foundations of fundamental physics.
+Physicslly is a theoretical physics notes blog focused on the mathematical and conceptual foundations of fundamental physics.
 
 The central theme of this site is the search for a Theory of Everything: not as a solved claim, but as an open research direction involving quantum field theory, general relativity, quantum gravity, gauge symmetry, cosmology, renomalization, effective field theory, geometry, topology, and mathematical physics.
 
